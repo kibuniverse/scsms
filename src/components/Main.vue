@@ -57,8 +57,8 @@
             </div>
             <template #footer>
               <span class="dialog-footer">
-                <el-button v-if="activeName ===  'second'" @click="login">登 录</el-button>
-                <el-button v-if="activeName === 'first'" @click="register">注 册</el-button>
+                <el-button v-if="activeName === 'second'" @click="login">登 录</el-button>
+                <el-button v-if="activeName === 'first'" @click="registerFn">注 册</el-button>
               </span>
             </template>
           </el-dialog>
@@ -67,12 +67,12 @@
     <div class="main">
       <router-view></router-view>
     </div>
-    <div class="footer">Footer</div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref } from 'vue'
+import { register, sign } from '../api/auth/auth'
 import router from '../router'
 
 export default defineComponent({
@@ -103,8 +103,8 @@ export default defineComponent({
     const centerDialogVisible = ref(false);
     const activeName = ref('second');
     const signInfo = reactive({
-      username: 'root',
-      password: '123',
+      username: 'oldYellow',
+      password: '222222',
     })
     const registInfo = reactive({
       username: 'oldYellow',
@@ -114,15 +114,16 @@ export default defineComponent({
       gender: 'man',
     })
 
-    async function login (signInfo) {
-      await sign(signInfo).then( res => {
-        console.log(res)
+    function login () {
+      sign(signInfo).then(res => {
+        console.log(res.data)
       })
     }
 
-    async function register(signInfo) {
-      await regist(registInfo).then( res => {
-        console.log(res)
+    function registerFn() {
+      console.log(registInfo)
+      register(registInfo).then( res => {
+        console.log(res.data)
       }).catch(err => console.log(err))
     }
 
@@ -147,7 +148,7 @@ export default defineComponent({
       centerDialogVisible,
       activeName,
       login,
-      register,
+      registerFn,
       toSaleCar,
       toMyCar,
       toBuyCar,

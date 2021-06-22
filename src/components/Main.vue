@@ -20,9 +20,9 @@
           </el-dropdown>
         </div>
         <div class="top-center">
-          <div @click="toBuyCar">我要买车</div>
-          <div @click="toSaleCar">我要卖车</div>
-          <div @click="toMyCar">我的车</div>
+          <div @click="toBuyCar" class="toBuyCar">我要买车</div>
+          <div @click="toSaleCar" class="toSaleCar">我要卖车</div>
+          <div @click="toMyCar" class="toMyCar">我的车</div>
         </div>
         <div class="top-right">
           <img src="../assets/user.png" alt="">
@@ -32,33 +32,21 @@
         </div>
     </div>
     <div class="main">
-<<<<<<< HEAD
-      Main
-=======
       <router-view></router-view>
->>>>>>> origin/master
     </div>
     <div class="footer">Footer</div>
   </div>
 </template>
 
 <script lang="ts">
-<<<<<<< HEAD
 import { ref, defineComponent, reactive } from 'vue';
-import { ElMessageBox } from 'element-plus';
-export default defineComponent({
-  name: 'Main',
-  components: {},
-  
-
-=======
-import { ref, defineComponent, reactive } from 'vue'
 import router from '../router/index.ts'
 
 export default defineComponent({
   name: 'Main',
   components: {},
   setup() {
+
     function toBuyCar () {
       router.push('buy')
     };
@@ -75,7 +63,6 @@ export default defineComponent({
       toBuyCar,
     };
   }
->>>>>>> origin/master
 })
 </script>
 
@@ -128,6 +115,23 @@ export default defineComponent({
     align-items: center;
     width: 300px;
     margin-right: 140px;
+    /* border-bottom: 1 solid #00F; */
+  }
+
+  .toBuyCar {
+    /* text-decoration: underline;
+    text-decoration-color: orange; */
+    border-bottom: 1px solid #00F;
+  }
+    .toSaleCar {
+    /* text-decoration: underline;
+    text-decoration-color: orange; */
+    border-bottom: 1px solid #00F;
+  }
+    .toMyCar {
+    /* text-decoration: underline;
+    text-decoration-color: orange; */
+    border-bottom: 1px solid #00F;
   }
 
   .top-right {

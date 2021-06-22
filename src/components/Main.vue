@@ -12,7 +12,7 @@
         <div class="top-right">
           <img src="../assets/user.png" alt="">
           <el-button type="text" @click="centerDialogVisible = true">
-            
+            登录
           </el-button>
           <el-dialog
             title="二手车直卖网"
@@ -29,8 +29,8 @@
             </div>
             <template #footer>
               <span class="dialog-footer">
-                <el-button @click="centerDialogVisible = false" v-if="activeName ===  'second'">登 录</el-button>
-                <el-button @click="centerDialogVisible = false" v-if="activeName === 'first'">注 册</el-button>
+                <el-button v-if="activeName ===  'second'" @click="login">登 录</el-button>
+                <el-button v-if="activeName === 'first'" @click="register">注 册</el-button>
               </span>
             </template>
           </el-dialog>
@@ -56,8 +56,31 @@ export default defineComponent({
     }
   },
   setup() {
-    let centerDialogVisible = ref(false);
-    let activeName = ref('second');
+    const centerDialogVisible = ref(false);
+    const activeName = ref('second');
+    const signInfo = reactive({
+      username: 'root',
+      password: '123',
+    })
+    const registInfo = reactive({
+      username: 'oldYellow',
+      password: '222222',
+      phonenum: '18829705316',
+      email:  '1212@qq.com',
+      gender: 'man',
+    })
+
+    async function login (signInfo) {
+      await sign(signInfo).then( res => {
+        console.log(res)
+      })
+    }
+
+    async function register(signInfo) {
+      await regist(registInfo).then( res => {
+        console.log(res)
+      }).catch(err => console.log(err))
+    }
 
     function toBuyCar () {
       router.push('buy')
@@ -89,6 +112,8 @@ export default defineComponent({
     return {
       centerDialogVisible,
       activeName,
+      login,
+      register,
       toSaleCar,
       toMyCar,
       toBuyCar,

@@ -22,34 +22,34 @@
             <div>
               <el-tabs v-model="activeName">
                 <el-tab-pane label="注册" name="first">
-                  <el-form ref="form" :model="form" label-width="80px">
+                  <el-form ref="registerForm" :model="registerForm" label-width="80px">
                   <el-form-item label="用户名" style="width: 400px">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="registerForm.username"></el-input>
                   </el-form-item>
                   <el-form-item label="密码" style="width: 400px">
-                    <el-input v-model="form.password"></el-input>
+                    <el-input show-password v-model="registerForm.password"></el-input>
                   </el-form-item>
                   <el-form-item label="电话号码" style="width: 400px">
-                    <el-input v-model="form.phonenum"></el-input>
+                    <el-input v-model="registerForm.phonenum"></el-input>
                   </el-form-item>
                   <el-form-item label="邮箱" style="width: 400px">
-                    <el-input v-model="form.email"></el-input>
+                    <el-input v-model="registerForm.email"></el-input>
                   </el-form-item>
                   <el-form-item label="性别">
-                    <el-radio-group v-model="form.gender">
-                      <el-radio label="男"></el-radio>
-                      <el-radio label="女"></el-radio>
+                    <el-radio-group v-model="registerForm.gender">
+                      <el-radio label="男" model-value={1}></el-radio>
+                      <el-radio label="女" ></el-radio>
                     </el-radio-group>
                   </el-form-item>
                   </el-form>
                 </el-tab-pane>
                 <el-tab-pane label="登录" name="second" >
-                  <el-form ref="form" :model="form" label-width="80px">
+                  <el-form ref="loginForm" :model="loginForm" label-width="80px">
                   <el-form-item label="用户名" style="width: 400px">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="loginForm.username"></el-input>
                   </el-form-item>
                   <el-form-item label="密码" style="width: 400px">
-                    <el-input v-model="form.password"></el-input>
+                    <el-input show-password v-model="loginForm.password"></el-input>
                   </el-form-item>
                   </el-form>
                 </el-tab-pane>
@@ -57,8 +57,8 @@
             </div>
             <template #footer>
               <span class="dialog-footer">
-                <el-button v-if="activeName === 'second'" @click="login">登 录</el-button>
-                <el-button v-if="activeName === 'first'" @click="registerFn">注 册</el-button>
+                <el-button v-if="activeName === 'second'" @click="() => login(loginForm)">登 录</el-button>
+                <el-button v-if="activeName === 'first'" @click="() => registerFn(registerForm)">注 册</el-button>
               </span>
             </template>
           </el-dialog>
@@ -81,48 +81,33 @@ export default defineComponent({
 
   data() {
     return {
-      form: {
-        name: '',
+      registerForm: {
+        username: '',
         password: '',
         phonenum: '',
         email: '',
         gender: '',
       },
+      loginForm: {
+        username: '',
+        password: '',
+      }
     }
   },
 
-  methods: {
-    handleSelect(key: string, keyPath: any) {
-        console.log(key, keyPath);
-    },
-    onSubmit() {
-      console.log('submit!');
-    }
-  },
   setup() {
     const centerDialogVisible = ref(false);
     const activeName = ref('second');
-    const signInfo = reactive({
-      username: 'oldYellow',
-      password: '222222',
-    })
-    const registInfo = reactive({
-      username: 'oldYellow',
-      password: '222222',
-      phonenum: '18829705316',
-      email:  '1212@qq.com',
-      gender: 'man',
-    })
 
-    function login () {
+    function login (signInfo) {
       sign(signInfo).then(res => {
         console.log(res.data)
       })
     }
 
-    function registerFn() {
-      console.log(registInfo)
-      register(registInfo).then( res => {
+    function registerFn(form) {
+      console.log(form)
+      register(form).then(res => {
         console.log(res.data)
       }).catch(err => console.log(err))
     }

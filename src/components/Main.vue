@@ -45,6 +45,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref } from 'vue'
+import {regist, sign } from '../api/auth/auth.ts'
 import router from '../router'
 
 export default defineComponent({
@@ -70,14 +71,14 @@ export default defineComponent({
       gender: 'man',
     })
 
-    async function login (signInfo) {
-      await sign(signInfo).then( res => {
+    function login () {
+      sign(signInfo).then( res => {
         console.log(res)
       })
     }
 
-    async function register(signInfo) {
-      await regist(registInfo).then( res => {
+    function register () {
+      regist(registInfo).then( res => {
         console.log(res)
       }).catch(err => console.log(err))
     }
@@ -112,6 +113,8 @@ export default defineComponent({
     return {
       centerDialogVisible,
       activeName,
+      registInfo,
+      signInfo,
       login,
       register,
       toSaleCar,

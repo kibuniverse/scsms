@@ -3,26 +3,11 @@
     <div class="header">
         <div class="top-left">
           <img src="../assets/Logo (2).png" alt="" >
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              长安区<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item>长安区</el-dropdown-item>
-                <el-dropdown-item>未央区</el-dropdown-item>
-                <el-dropdown-item>灞桥区</el-dropdown-item>
-                <el-dropdown-item>雁塔区</el-dropdown-item>
-                <el-dropdown-item>碑林区</el-dropdown-item>
-                <el-dropdown-item>莲湖区</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
-        <div class="top-center">
-          <div @click="toBuyCar">我要买车</div>
-          <div @click="toSaleCar">我要卖车</div>
-          <div @click="toMyCar">我的车</div>
+          <el-menu class="top-center el-menu-demo" :default-active="activeIndex" mode="horizontal" @select="handleSelect">
+            <el-menu-item index='1' @click="toBuyCar">我要买车</el-menu-item>
+            <el-menu-item index='2' @click="toSaleCar">我要卖车</el-menu-item>
+            <el-menu-item index='3' @click="toMyCar">我的车</el-menu-item>
+          </el-menu>
         </div>
         <div class="top-right">
           <img src="../assets/user.png" alt="">
@@ -59,12 +44,17 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, reactive } from 'vue'
-import router from '../router/index.ts'
+import { defineComponent, reactive, toRefs, ref } from 'vue'
+import router from '../router'
 
 export default defineComponent({
   name: 'Main',
   components: {},
+  methods: {
+    handleSelect(key: string, keyPath: any) {
+        console.log(key, keyPath);
+    }
+  },
   setup() {
     let centerDialogVisible = ref(false);
     let activeName = ref('second');
@@ -78,6 +68,23 @@ export default defineComponent({
     function toSaleCar () {
       router.push('sale')
     };
+    const state = reactive({
+        dialogTableVisible: false,
+        dialogFormVisible: false,
+        form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: '',
+        },
+        formLabelWidth: '120px',
+        activeIndex: '1',
+        activeIndex2: '1'
+      });
 
     return {
       centerDialogVisible,
@@ -85,6 +92,7 @@ export default defineComponent({
       toSaleCar,
       toMyCar,
       toBuyCar,
+      ...toRefs(state),
     };
   }
 })
@@ -139,13 +147,15 @@ export default defineComponent({
     align-items: center;
     width: 300px;
     margin-right: 140px;
+    
   }
-
+  .top-center:hover {
+    cursor:pointer;
+  }
   .top-right {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid red; */
     text-align: center;
     margin-right: 100px;
   }

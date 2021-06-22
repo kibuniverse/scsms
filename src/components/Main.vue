@@ -26,9 +26,47 @@
         </div>
         <div class="top-right">
           <img src="../assets/user.png" alt="">
-          <span @click="login">
-            <el-button type="text" @click="open">登录</el-button>
-          </span>
+          <el-button type="text" @click="centerDialogVisible = true">
+            登录
+          </el-button>
+          <el-dialog
+            title="二手车直卖网"
+            v-model="centerDialogVisible"
+            width="50%"
+            center>
+            <div>
+              <el-tabs v-model="activeName">
+                <el-tab-pane label="注册" name="first" >
+                  <el-form ref="form" :model="form" label-width="80px">
+                  <el-form-item label="用户名">
+                    <el-input v-model="form.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="密码">
+                    <el-input v-model="form.password"></el-input>
+                  </el-form-item>
+                  <el-form-item label="电话号码">
+                    <el-input v-model="form.phonenum"></el-input>
+                  </el-form-item>
+                  <el-form-item label="邮箱">
+                    <el-input v-model="form.email"></el-input>
+                  </el-form-item>
+                  <el-form-item label="性别">
+                    <el-input v-model="form.gender"></el-input>
+                  </el-form-item>
+                  </el-form>
+                </el-tab-pane>
+                <el-tab-pane label="登录" name="second" >
+                  登录
+                </el-tab-pane>
+              </el-tabs>
+            </div>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button @click="centerDialogVisible = false" v-if="activeName ===  'second'">登 录</el-button>
+                <el-button @click="centerDialogVisible = false" v-if="activeName === 'first'">注 册</el-button>
+              </span>
+            </template>
+          </el-dialog>
         </div>
     </div>
     <div class="main">
@@ -45,7 +83,22 @@ import router from '../router/index.ts'
 export default defineComponent({
   name: 'Main',
   components: {},
+
+  data() {
+    return {
+      form: {
+        name: '',
+        password: '',
+        phonenum: '',
+        email: '',
+        gender: '',
+      }
+    }
+  },
+
   setup() {
+    let centerDialogVisible = ref(false);
+    let activeName = ref('second');
 
     function toBuyCar () {
       router.push('buy')
@@ -58,6 +111,8 @@ export default defineComponent({
     };
 
     return {
+      centerDialogVisible,
+      activeName,
       toSaleCar,
       toMyCar,
       toBuyCar,
@@ -116,22 +171,6 @@ export default defineComponent({
     width: 300px;
     margin-right: 140px;
     /* border-bottom: 1 solid #00F; */
-  }
-
-  .toBuyCar {
-    /* text-decoration: underline;
-    text-decoration-color: orange; */
-    border-bottom: 1px solid #00F;
-  }
-    .toSaleCar {
-    /* text-decoration: underline;
-    text-decoration-color: orange; */
-    border-bottom: 1px solid #00F;
-  }
-    .toMyCar {
-    /* text-decoration: underline;
-    text-decoration-color: orange; */
-    border-bottom: 1px solid #00F;
   }
 
   .top-right {

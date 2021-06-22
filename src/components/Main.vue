@@ -26,7 +26,29 @@
         </div>
         <div class="top-right">
           <img src="../assets/user.png" alt="">
-          <span>登录</span>
+          <el-button type="text" @click="centerDialogVisible = true">
+            
+          </el-button>
+          <el-dialog
+            title="二手车直卖网"
+            v-model="centerDialogVisible"
+            width="50%"
+            center>
+            <div>
+              <el-tabs v-model="activeName">
+                <el-tab-pane label="注册" name="first" >注册</el-tab-pane>
+                <el-tab-pane label="登录" name="second" >
+                  登录
+                </el-tab-pane>
+              </el-tabs>
+            </div>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button @click="centerDialogVisible = false" v-if="activeName ===  'second'">登 录</el-button>
+                <el-button @click="centerDialogVisible = false" v-if="activeName === 'first'">注 册</el-button>
+              </span>
+            </template>
+          </el-dialog>
         </div>
     </div>
     <div class="main">
@@ -44,6 +66,9 @@ export default defineComponent({
   name: 'Main',
   components: {},
   setup() {
+    let centerDialogVisible = ref(false);
+    let activeName = ref('second');
+
     function toBuyCar () {
       router.push('buy')
     };
@@ -55,6 +80,8 @@ export default defineComponent({
     };
 
     return {
+      centerDialogVisible,
+      activeName,
       toSaleCar,
       toMyCar,
       toBuyCar,

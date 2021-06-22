@@ -20,9 +20,9 @@
           </el-dropdown>
         </div>
         <div class="top-center">
-          <div>我要买车</div>
-          <div>我要卖车</div>
-          <div>我的车</div>
+          <div @click="toBuyCar">我要买车</div>
+          <div @click="toSaleCar">我要卖车</div>
+          <div @click="toMyCar">我的车</div>
         </div>
         <div class="top-right">
           <img src="../assets/user.png" alt="">
@@ -32,13 +32,18 @@
         </div>
     </div>
     <div class="main">
+<<<<<<< HEAD
       Main
+=======
+      <router-view></router-view>
+>>>>>>> origin/master
     </div>
     <div class="footer">Footer</div>
   </div>
 </template>
 
 <script lang="ts">
+<<<<<<< HEAD
 import { ref, defineComponent, reactive } from 'vue';
 import { ElMessageBox } from 'element-plus';
 export default defineComponent({
@@ -46,6 +51,31 @@ export default defineComponent({
   components: {},
   
 
+=======
+import { ref, defineComponent, reactive } from 'vue'
+import router from '../router/index.ts'
+
+export default defineComponent({
+  name: 'Main',
+  components: {},
+  setup() {
+    function toBuyCar () {
+      router.push('buy')
+    };
+    function toMyCar () {
+      router.push('selfcar')
+    };
+    function toSaleCar () {
+      router.push('sale')
+    };
+
+    return {
+      toSaleCar,
+      toMyCar,
+      toBuyCar,
+    };
+  }
+>>>>>>> origin/master
 })
 </script>
 

@@ -26,19 +26,26 @@
         </div>
         <div class="top-right">
           <img src="../assets/user.png" alt="">
-          <span>登录</span>
+          <span @click="login">
+            <el-button type="text" @click="open">登录</el-button>
+          </span>
         </div>
     </div>
-    <div class="main">Main</div>
+    <div class="main">
+      Main
+    </div>
     <div class="footer">Footer</div>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, reactive } from 'vue'
+import { ref, defineComponent, reactive } from 'vue';
+import { ElMessageBox } from 'element-plus';
 export default defineComponent({
   name: 'Main',
   components: {},
+  
+
 })
 </script>
 
@@ -106,7 +113,10 @@ export default defineComponent({
     height: 20px;
     margin-right: 5px;
   }
-
+  .login {
+    position: relative;
+    margin: 0 auto;
+  }
   .main {
     background-color: #E9EEF3;
     color: #333;

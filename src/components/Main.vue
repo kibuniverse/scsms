@@ -22,7 +22,7 @@
             <div>
               <el-tabs v-model="activeName">
                 <el-tab-pane label="注册" name="first">
-                  <el-form ref="registerForm" :model="registerForm" label-width="80px">
+                  <el-form  :model="registerForm" label-width="80px">
                   <el-form-item label="用户名" style="width: 400px">
                     <el-input v-model="registerForm.username"></el-input>
                   </el-form-item>
@@ -57,8 +57,8 @@
             </div>
             <template #footer>
               <span class="dialog-footer">
-                <el-button type="primary" v-if="activeName === 'second'" @click="() => login(loginForm)">登 录</el-button>
-                <el-button type="primary" v-if="activeName === 'first'" @click="() => registerFn(registerForm)">注 册</el-button>
+                <el-button type="primary" v-if="activeName === 'second'" @click="login">登 录</el-button>
+                <el-button type="primary" v-if="activeName === 'first'" @click="registerFn">注 册</el-button>
               </span>
             </template>
           </el-dialog>
@@ -79,37 +79,47 @@ export default defineComponent({
   name: 'Main',
   components: {},
 
-  data() {
-    return {
-      registerForm: {
-        username: '',
-        password: '',
-        phonenum: '',
-        email: '',
-        gender: '男',
-      },
-      loginForm: {
-        username: 'root',
-        password: '123',
-      }
-    }
-  },
+  // data() {
+  //   return {
+  //     registerForm: {
+  //       username: '',
+  //       password: '',
+  //       phonenum: '',
+  //       email: '',
+  //       gender: '男',
+  //     },
+  //     loginForm: {
+  //       username: 'root',
+  //       password: '123',
+  //     }
+  //   }
+  // },
 
   setup() {
-    let centerDialogVisible = ref(false);
+    const centerDialogVisible = ref(false);
     const activeName = ref('second');
-
-    function login (signInfo) {
-      sign(signInfo).then(res => {
-        // centerDialogVisible = false
+    const registerForm = reactive({
+      username: '',
+      password: '',
+      phonenum: '',
+      email: '',
+      gender: '男',
+    }); 
+    const loginForm = reactive({
+      username: 'root',
+      password: '123',
+    }) 
+    function login () {
+      sign(loginForm).then(res => {
+        centerDialogVisible.value = false
         console.log(res.data)
       })
     }
 
-    function registerFn(form) {
-      form.gender = form.gender === '男' ? 1 : 0
-      // centerDialogVisible = false
-      register(form).then(res => {
+    function registerFn() {
+      registerForm.gender = registerForm.gender === '男' ? 1 : 0
+      centerDialogVisible.value = false
+      register(registerForm).then(res => {
         console.log(res.data)
       }).catch(err => console.log(err))
     }
@@ -135,6 +145,8 @@ export default defineComponent({
       centerDialogVisible,
       activeName,
       login,
+      registerForm,
+      loginForm,
       registerFn,
       toSaleCar,
       toMyCar,

@@ -55,7 +55,7 @@
 <script lang="ts">
   import { defineComponent, ref, reactive, onMounted } from 'vue'
   import { carData, carInfo } from '../data/index.ts'
-  import { getInfo, getCarInfo } from '../api/car/index.ts'
+  import { getInfo, getCarInfo } from '../api/buy-car/index.ts'
 
   export default defineComponent({
     name: 'BuyCar',
@@ -63,7 +63,7 @@
     setup() {
       onMounted(() => {
         getInfoFn()
-        getCarInfoFn(1)
+        // getCarInfoFn(1)
       })
 
       const searchValue = ref('')

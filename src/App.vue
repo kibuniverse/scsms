@@ -23,5 +23,6 @@ export default defineComponent({
 * {
   margin: 0;
   padding: 0;
+  transition: all 1s;
 }
 </style>

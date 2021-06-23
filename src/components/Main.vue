@@ -111,6 +111,11 @@ export default defineComponent({
     })
     const handleLoginOut = () => {
       window.localStorage.removeItem('username')
+      ElMessage({
+        showClose: true,
+        message: '登出成功',
+        type: 'success'
+      });
       window.location.reload()
     }
     function login () {

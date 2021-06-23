@@ -26,8 +26,12 @@ export const post = async (url: string, data: Record<string | number, any>): Pro
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const get = async (url = '', data: Record<string | number, any> = {}): Promise<any> => {
   let realUrl = baseURL + url;
-  Object.keys(data).forEach((item) => {
-    realUrl += `?${item}=${data[item]}`;
+  Object.keys(data).forEach((item, index) => {
+    if (index === 0) {
+      realUrl += `?${item}=${data[item]}`;
+    } else {
+      realUrl += `&${item}=${data[item]}`;
+    }
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resData: any = await axios.get(realUrl, { headers: { withCredentials: true } });

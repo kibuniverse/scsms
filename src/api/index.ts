@@ -8,7 +8,9 @@ export const api = axios.create({
   timeout: 8000,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const post = async (url: string, data: Record<string | number, any>): Promise<any> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resData: any = await axios.post(`${baseURL}${url}`, data, { headers: { withCredentials: true } });
   if (resData.data.status) {
     ElMessage({
@@ -21,6 +23,7 @@ export const post = async (url: string, data: Record<string | number, any>): Pro
   return resData.data.data || true;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const get = async (url = '', data: Record<string | number, any> = {}): Promise<any> => {
   let realUrl = baseURL + url;
   Object.keys(data).forEach((item, index) => {
@@ -30,6 +33,7 @@ export const get = async (url = '', data: Record<string | number, any> = {}): Pr
       realUrl += `&${item}=${data[item]}`;
     }
   });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resData: any = await axios.get(realUrl, { headers: { withCredentials: true } });
   if (resData.data.status) {
     ElMessage({

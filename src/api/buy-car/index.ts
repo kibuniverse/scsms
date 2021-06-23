@@ -1,3 +1,5 @@
-import { get, post } from '../index.ts';
+import { get } from '../index.ts';
 
-export const getAllCar = (): unknown => get('/buy/index');
+export const getInfo = (): unknown => get('/buy/index');
+
+export const getCarInfo = (page: unknown): unknown => get('/buy/queryInfo', page);

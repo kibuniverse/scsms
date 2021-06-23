@@ -12,7 +12,7 @@
         <div class="top-right">
           <img src="../assets/user.png" alt="">
           <el-button type="text" @click="centerDialogVisible = true">
-            登录
+            登陆
           </el-button>
           <el-dialog
             title="二手车直卖网"
@@ -37,8 +37,8 @@
                   </el-form-item>
                   <el-form-item label="性别">
                     <el-radio-group v-model="registerForm.gender">
-                      <el-radio label="男" ></el-radio>
-                      <el-radio label="女" ></el-radio>
+                      <el-radio label="1">男</el-radio>
+                      <el-radio label="0">女</el-radio>
                     </el-radio-group>
                   </el-form-item>
                   </el-form>
@@ -73,6 +73,7 @@
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref } from 'vue'
 import { register, sign } from '../api/auth/auth'
+import { ElMessage } from 'element-plus'
 import router from '../router'
 
 export default defineComponent({
@@ -94,23 +95,36 @@ export default defineComponent({
       }
     }
   },
-
   setup() {
-    let centerDialogVisible = ref(false);
+    const centerDialogVisible = ref(false)
     const activeName = ref('second');
-
+    let userInfo  = ref('')
     function login (signInfo) {
+      console.log(signInfo)
       sign(signInfo).then(res => {
-        // centerDialogVisible = false
-        console.log(res.data)
+        if (res.data.status === 0) {
+          ElMessage({
+            showClose: true,
+            message: '登陆成功',
+            type: 'success'
+          });
+          centerDialogVisible.value = false
+          window.localStorage.setItem('username', res.data.data.username)
+        }
       })
     }
 
     function registerFn(form) {
-      form.gender = form.gender === '男' ? 1 : 0
-      // centerDialogVisible = false
+      form.gender = Number(form.gender)
       register(form).then(res => {
-        console.log(res.data)
+        if (res.status === 0) {
+          ElMessage({
+            showClose: true,
+            message: '注册成功',
+            type: 'success'
+          });
+          centerDialogVisible.value = false
+        }
       }).catch(err => console.log(err))
     }
 
@@ -134,6 +148,7 @@ export default defineComponent({
     return {
       centerDialogVisible,
       activeName,
+      userInfo,
       login,
       registerFn,
       toSaleCar,

@@ -86,7 +86,7 @@ export default defineComponent({
     const registerForm = reactive({
       username: '',
       password: '',
-      phonenum: '',
+      phoneNum: '',
       email: '',
       gender: '1',
     })
@@ -229,7 +229,7 @@ export default defineComponent({
     margin: 0 auto;
   }
   .main {
-    background-color: #E9EEF3;
+    background-color: #ffffff;
     color: #333;
     text-align: center;
     /* margin-top: 60px;

@@ -23,39 +23,27 @@
             center
           >
             <div>
-              <el-form :model="loginForm" label-width="80px">
-                <el-form-item label="车">
-                  <el-radio-group v-model="registerForm.gender">
-                    <el-cascader
-                      class="sell-cars"
-                      v-if="centerDialogVisible"
-                      :options="options"
-                      :show-all-levels="true"
-                      clearable
-                    >
-                    </el-cascader>
-                  </el-radio-group>
+              <el-form :model="salecarForm" label-width="80px">
+                <el-form-item label="车型">
+                  <el-cascader
+                    class="sell-cars"
+                    v-model="value"
+                    :options="options"
+                    :props="props"
+                  >
+                  </el-cascader>
                 </el-form-item>
                 <el-form-item label="购车时间" style="width: 400px">
-                  <el-input v-model="loginForm.username"></el-input>
+                  <el-input v-model="salecarForm.buyTime"></el-input>
                 </el-form-item>
                 <el-form-item label="行驶里程" style="width: 400px">
-                  <el-input
-                    show-password
-                    v-model="loginForm.password"
-                  ></el-input>
+                  <el-input v-model="salecarForm.km"></el-input>
                 </el-form-item>
                 <el-form-item label="颜色" style="width: 400px">
-                  <el-input
-                    show-password
-                    v-model="loginForm.password"
-                  ></el-input>
+                  <el-input v-model="salecarForm.color"></el-input>
                 </el-form-item>
                 <el-form-item label="价格" style="width: 400px">
-                  <el-input
-                    show-password
-                    v-model="loginForm.password"
-                  ></el-input>
+                  <el-input v-model="salecarForm.price"></el-input>
                 </el-form-item>
               </el-form>
             </div>
@@ -94,8 +82,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watchEffect, reactive, onMounted, toRefs } from "vue";
-import { salecar, getCarSeries } from "../api/sale-car/index";
+import {
+  defineComponent,
+  ref,
+  watchEffect,
+  reactive,
+  onMounted,
+  toRefs,
+} from "vue";
+import {
+  salecar,
+  getCarBrand,
+  getCarSeries,
+  getCarModels,
+} from "../api/sale-car/index";
 export default defineComponent({
   name: "SaleCar",
   components: {},
@@ -103,8 +103,16 @@ export default defineComponent({
     const centerDialogVisible = ref(false);
     watchEffect(() => console.log(centerDialogVisible));
     onMounted(() => {
-      getCarSeries({}).then(res => console.log(res))
-    })
+      getCarBrand({}).then((res) => {
+        console.log(res);
+        console.log(carState.options);
+        carState.options = res.map((item: string) => ({
+          value: item,
+          label: item,
+          children: [],
+        }));
+      });
+    });
     const salecarForm = reactive({
       brand: "",
       series: "",
@@ -114,45 +122,44 @@ export default defineComponent({
       color: "",
       price: 10000,
     });
-    const state = reactive({
-      Option: [
-        {
-          value: "zhinan",
-          label: "指南",
-          children: [
-            {
-              value: "shejiyuanze",
-              label: "设计原则",
-              children: [
-                {
-                  value: "yizhi",
-                  label: "一致",
-                },
-                {
-                  value: "fankui",
-                  label: "反馈",
-                },
-                {
-                  value: "xiaolv",
-                  label: "效率",
-                },
-                {
-                  value: "kekong",
-                  label: "可控",
-                },
-              ],
-            },
-          ],
+    const carState = reactive({
+      value: [],
+      props: {
+        expandTrigger: "hover",
+        lazy: true,
+        lazyLoad(node: any, resolve: any) {
+          const { level } = node;
+          console.log(node.label);
+          if (level === 1) {
+            getCarSeries(node.label).then((res) => {
+              const data = res.map((seriesItem) => ({
+                value: seriesItem,
+                label: seriesItem,
+                leaf: level > 1,
+              }));
+              resolve(data);
+            });
+          }
+          if (level === 2) {
+            getCarModels(node.label).then((res) => {
+              console.log(res);
+              const data = res.map((modelItem) => ({
+                value: modelItem,
+                label: modelItem,
+                leaf: level > 1,
+              }));
+              resolve(data);
+            });
+          }
         },
-      ],
+      },
+      options: [],
     });
-
-    getCarSeries() 
 
     return {
       centerDialogVisible,
       salecarForm,
-      ...toRefs(state),
+      ...toRefs(carState),
     };
   },
 });

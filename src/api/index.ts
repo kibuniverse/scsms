@@ -21,8 +21,13 @@ export const post = async (url: string, data: Record<string | number, any>): Pro
   return resData.data.data || true;
 };
 
-export const get = async (url: string, data: Record<string | number, any>): Promise<any> => {
-  const resData: any = await axios.get(`${baseURL}${url}`, data);
+export const get = async (url = '', data: Record<string | number, any> = {}): Promise<any> => {
+  let realUrl = url;
+  Object.keys(data).forEach((item) => {
+    realUrl += `&${item}=${data[item]}`;
+  });
+  console.log(realUrl);
+  const resData: any = await axios.get(realUrl, { headers: { withCredentials: true } });
   if (resData.data.status) {
     ElMessage({
       showClose: true,

@@ -137,7 +137,7 @@ export default defineComponent({
             message: '注册成功',
             type: 'success'
           });
-          centerDialogVisible.value = false
+          activeName.value = 'second'
         }
       }).catch(err => console.log(err))
     }

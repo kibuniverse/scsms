@@ -22,11 +22,14 @@ export const post = async (url: string, data: Record<string | number, any>): Pro
 };
 
 export const get = async (url = '', data: Record<string | number, any> = {}): Promise<any> => {
-  let realUrl = url;
-  Object.keys(data).forEach((item) => {
-    realUrl += `&${item}=${data[item]}`;
+  let realUrl = baseURL + url;
+  Object.keys(data).forEach((item, index) => {
+    if (index === 0) {
+      realUrl += `?${item}=${data[item]}`;
+    } else {
+      realUrl += `&${item}=${data[item]}`;
+    }
   });
-  console.log(realUrl);
   const resData: any = await axios.get(realUrl, { headers: { withCredentials: true } });
   if (resData.data.status) {
     ElMessage({

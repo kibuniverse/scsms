@@ -22,9 +22,9 @@ interface ISaleCar {
 }
 
 interface ICar {
-  brand: string;
-  series: string;
-  model: string;
+  brand?: string;
+  series?: string;
+  model?: string;
 }
 
 export {

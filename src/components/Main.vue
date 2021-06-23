@@ -97,7 +97,7 @@ export default defineComponent({
     let userInfo  = ref('')
     function login () {
       sign(loginForm).then(res => {
-        if (res.data.status === 0) {
+        if (res) {
           ElMessage({
             showClose: true,
             message: '登录成功',
@@ -112,8 +112,7 @@ export default defineComponent({
     function registerFn() {
       registerForm.gender = Number(registerForm.gender)
       register(registerForm).then(res => {
-        console.log(res)
-        if (res.data.status === 0) {
+        if (res) {
           ElMessage({
             showClose: true,
             message: '注册成功',

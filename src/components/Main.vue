@@ -3,7 +3,7 @@
     <div class="header">
         <div class="top-left">
           <img src="../assets/Logo (2).png" alt="" >
-          <el-menu class="top-center el-menu-demo" :default-active="activeIndex" mode="horizontal" @select="handleSelect">
+          <el-menu class="top-center el-menu-demo" :default-active="activeIndex" mode="horizontal" >
             <el-menu-item index='1' @click="toBuyCar">我要买车</el-menu-item>
             <el-menu-item index='2' @click="toSaleCar">我要卖车</el-menu-item>
             <el-menu-item index='3' @click="toMyCar">我的车</el-menu-item>
@@ -22,43 +22,43 @@
             <div>
               <el-tabs v-model="activeName">
                 <el-tab-pane label="注册" name="first">
-                  <el-form ref="form" :model="form" label-width="80px">
-                  <el-form-item label="用户名" style="width: 400px">
-                    <el-input v-model="form.name"></el-input>
-                  </el-form-item>
-                  <el-form-item label="密码" style="width: 400px">
-                    <el-input v-model="form.password"></el-input>
-                  </el-form-item>
-                  <el-form-item label="电话号码" style="width: 400px">
-                    <el-input v-model="form.phonenum"></el-input>
-                  </el-form-item>
-                  <el-form-item label="邮箱" style="width: 400px">
-                    <el-input v-model="form.email"></el-input>
-                  </el-form-item>
-                  <el-form-item label="性别">
-                    <el-radio-group v-model="form.gender">
-                      <el-radio label="男"></el-radio>
-                      <el-radio label="女"></el-radio>
-                    </el-radio-group>
-                  </el-form-item>
+                  <el-form  :model="registerForm" label-width="80px">
+                    <el-form-item label="用户名" style="width: 400px">
+                      <el-input v-model="registerForm.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" style="width: 400px">
+                      <el-input show-password v-model="registerForm.password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="电话号码" style="width: 400px">
+                      <el-input v-model="registerForm.phonenum"></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮箱" style="width: 400px">
+                      <el-input v-model="registerForm.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="性别">
+                      <el-radio-group v-model="registerForm.gender">
+                        <el-radio label="1">男</el-radio>
+                        <el-radio label="0">女</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
                   </el-form>
                 </el-tab-pane>
                 <el-tab-pane label="登录" name="second" >
-                  <el-form ref="form" :model="form" label-width="80px">
-                  <el-form-item label="用户名" style="width: 400px">
-                    <el-input v-model="form.name"></el-input>
-                  </el-form-item>
-                  <el-form-item label="密码" style="width: 400px">
-                    <el-input v-model="form.password"></el-input>
-                  </el-form-item>
+                  <el-form  :model="loginForm" label-width="80px">
+                    <el-form-item label="用户名" style="width: 400px">
+                      <el-input v-model="loginForm.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" style="width: 400px">
+                      <el-input show-password v-model="loginForm.password"></el-input>
+                    </el-form-item>
                   </el-form>
                 </el-tab-pane>
               </el-tabs>
             </div>
             <template #footer>
               <span class="dialog-footer">
-                <el-button v-if="activeName ===  'second'" @click="login">登 录</el-button>
-                <el-button v-if="activeName === 'first'" @click="register">注 册</el-button>
+                <el-button type="primary" v-if="activeName === 'second'" @click="login">登 录</el-button>
+                <el-button type="primary" v-if="activeName === 'first'" @click="registerFn">注 册</el-button>
               </span>
             </template>
           </el-dialog>
@@ -67,62 +67,59 @@
     <div class="main">
       <router-view></router-view>
     </div>
-    <div class="footer">Footer</div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref } from 'vue'
+import { register, sign } from '../api/auth/auth'
+import { ElMessage } from 'element-plus'
 import router from '../router'
 
 export default defineComponent({
   name: 'Main',
   components: {},
 
-  data() {
-    return {
-      form: {
-        name: '',
-        password: '',
-        phonenum: '',
-        email: '',
-        gender: '',
-      },
-    }
-  },
-
-  methods: {
-    handleSelect(key: string, keyPath: any) {
-        console.log(key, keyPath);
-    },
-    onSubmit() {
-      console.log('submit!');
-    }
-  },
   setup() {
-    const centerDialogVisible = ref(false);
+    const centerDialogVisible = ref(false)
     const activeName = ref('second');
-    const signInfo = reactive({
+    const registerForm = reactive({
+      username: '',
+      password: '',
+      phonenum: '',
+      email: '',
+      gender: '1',
+    })
+    const loginForm = reactive({
       username: 'root',
       password: '123',
     })
-    const registInfo = reactive({
-      username: 'oldYellow',
-      password: '222222',
-      phonenum: '18829705316',
-      email:  '1212@qq.com',
-      gender: 'man',
-    })
-
-    async function login (signInfo) {
-      await sign(signInfo).then( res => {
-        console.log(res)
+    let userInfo  = ref('')
+    function login () {
+      sign(loginForm).then(res => {
+        if (res) {
+          ElMessage({
+            showClose: true,
+            message: '登录成功',
+            type: 'success'
+          });
+          centerDialogVisible.value = false
+          window.localStorage.setItem('username', res.data.data.username)
+        }
       })
     }
 
-    async function register(signInfo) {
-      await regist(registInfo).then( res => {
-        console.log(res)
+    function registerFn() {
+      registerForm.gender = Number(registerForm.gender)
+      register(registerForm).then(res => {
+        if (res) {
+          ElMessage({
+            showClose: true,
+            message: '注册成功',
+            type: 'success'
+          });
+          centerDialogVisible.value = false
+        }
       }).catch(err => console.log(err))
     }
 
@@ -146,8 +143,11 @@ export default defineComponent({
     return {
       centerDialogVisible,
       activeName,
+      loginForm,
+      registerForm,
+      userInfo,
       login,
-      register,
+      registerFn,
       toSaleCar,
       toMyCar,
       toBuyCar,

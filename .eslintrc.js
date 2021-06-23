@@ -1,4 +1,3 @@
-
 module.exports = {
   extends: [
     'plugin:vue/vue3-recommended',
@@ -13,6 +12,6 @@ module.exports = {
   plugins: ['vue'],
   rules: {
     'linebreak-style': ['off', 'windows'],
-    'indent': ['off', 2],//缩进
+    indent: ['off', 2], // 缩进
   },
 };

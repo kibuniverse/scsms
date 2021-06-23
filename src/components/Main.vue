@@ -10,10 +10,19 @@
           </el-menu>
         </div>
         <div class="top-right">
-          <img src="../assets/user.png" alt="">
-          <el-button type="text" @click="centerDialogVisible = true">
-            登录
-          </el-button>
+          <div class="user-info" v-if="userInfo">
+            <img src="../assets/user.png" alt="">
+            <div class="user-name">{{userInfo}}</div>
+            <el-button type="text" @click="handleLoginOut">
+              登出
+            </el-button>
+          </div>
+          <div v-else>
+            <el-button type="text" @click="centerDialogVisible = true">
+              登录
+            </el-button>
+          </div>
+          
           <el-dialog
             title="二手车直卖网"
             v-model="centerDialogVisible"
@@ -71,7 +80,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref } from 'vue'
+import { defineComponent, reactive, toRefs, ref, onMounted } from 'vue'
 import { register, sign } from '../api/auth/auth'
 import { ElMessage } from 'element-plus'
 import router from '../router'
@@ -79,7 +88,6 @@ import router from '../router'
 export default defineComponent({
   name: 'Main',
   components: {},
-
   setup() {
     const centerDialogVisible = ref(false)
     const activeName = ref('second');
@@ -94,7 +102,17 @@ export default defineComponent({
       username: 'root',
       password: '123',
     })
-    let userInfo  = ref('')
+    const userInfo  = ref('')
+    onMounted(() => {
+      const username = window.localStorage.getItem('username')
+      if (username) {
+        userInfo.value = username
+      }
+    })
+    const handleLoginOut = () => {
+      window.localStorage.removeItem('username')
+      window.location.reload()
+    }
     function login () {
       sign(loginForm).then(res => {
         if (res) {
@@ -104,7 +122,8 @@ export default defineComponent({
             type: 'success'
           });
           centerDialogVisible.value = false
-          window.localStorage.setItem('username', res.data.data.username)
+          window.localStorage.setItem('username', res.username)
+          userInfo.value = res.username
         }
       })
     }
@@ -151,6 +170,7 @@ export default defineComponent({
       toSaleCar,
       toMyCar,
       toBuyCar,
+      handleLoginOut,
       ...toRefs(state),
     };
   }
@@ -182,7 +202,14 @@ export default defineComponent({
     margin-left: 100px;
     float: left;
   }
-
+  .user-info {
+    display: flex;
+    align-content: center;
+    align-items: center;
+  }
+  .user-name {
+    margin-right: 20px;
+  }
   .el-dropdown {
     float: left;
   }

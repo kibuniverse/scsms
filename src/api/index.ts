@@ -9,7 +9,7 @@ export const api = axios.create({
 });
 
 export const post = async (url: string, data: Record<string | number, any>): Promise<any> => {
-  const resData: any = await axios.post(`${baseURL}${url}`, data);
+  const resData: any = await axios.post(`${baseURL}${url}`, data, { headers: { withCredentials: true } });
   if (resData.data.status) {
     ElMessage({
       showClose: true,
@@ -22,7 +22,7 @@ export const post = async (url: string, data: Record<string | number, any>): Pro
 };
 
 export const get = async (url: string, data: Record<string | number, any>): Promise<any> => {
-  const resData: any = axios.get(`${baseURL}${url}`, data);
+  const resData: any = await axios.get(`${baseURL}${url}`, data);
   if (resData.data.status) {
     ElMessage({
       showClose: true,

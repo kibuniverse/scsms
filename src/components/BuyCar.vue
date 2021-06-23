@@ -42,12 +42,11 @@
       background
       layout="prev, pager, next"
       :page-size="20"
-      :pager-count="7"
-      :page-count="20"
+      :pager-count="5"
+      :page-count="pageCount.pagenumber"
       @current-change="pageChage"
       class="page"
     >
-    <!-- :page-count="pageCount.pagenumber" -->
     </el-pagination>
   </div>
 </template>
@@ -63,7 +62,7 @@
     setup() {
       onMounted(() => {
         getInfoFn()
-        // getCarInfoFn(1)
+        getCarInfoFn(2)
       })
 
       const searchValue = ref('')
@@ -71,17 +70,36 @@
       const handleChange = (val) => {
         console.log(val)
       }
+      
+      const cSeries = ref([])
+      const cBrands = ref([])
 
       function getInfoFn () {
         getInfo().then(res => {
-          cSeries.value = res.data.data.brands
-          cBrands.value = res.data.data.series
+          cSeries.value = res.brands
+          cBrands.value = res.series
         })
       }
+      
+      const oneCarInfo = {
+        series: '宝马5系',
+        model: '2014款',
+        displacement: '525Li',
+        style: '运动型',
+        year: '2016年',
+        Kilometer: '11万公里',
+        price: '36万',
+      }
+
+      let AllCarInfo = ref([])
 
       function getCarInfoFn (page) {
-        getCarInfo(page).then(res => {
+        let nPage = {
+          page,
+        }
+        getCarInfo(nPage).then(res => {
           console.log(res)
+          pageCount.pagenumber = res.pages
         })
       }
 
@@ -89,18 +107,11 @@
         pagenumber:  null // 页数
       })
 
-      // function getTableData(page) {
-      //   allCar(page).then(res => {
-      //     // 改变 tableData的值时 要加上.value属性
-      //     pageCount.pagenumber = res.msg.pageNums
-      //   })
-      // }
       function pageChage(page) {
-        // getTableData(page)
+        console.log(page)
+        getCarInfoFn(page)
       }
 
-      const cSeries = ref([])
-      const cBrands = ref([])
       return {
         cSeries,
         cBrands,

@@ -23,7 +23,9 @@ export const post = async (url: string, data: Record<string | number, any>): Pro
   return resData.data.data || true;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const get = async (url: string, data: Record<string | number, any>): Promise<any> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resData: any = await axios.get(`${baseURL}${url}`, data);
   if (resData.data.status) {
     ElMessage({

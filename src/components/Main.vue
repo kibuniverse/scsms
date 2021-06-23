@@ -230,10 +230,11 @@ export default defineComponent({
   .main {
     background-color: #E9EEF3;
     color: #333;
-    text-align: center;
-    /* margin-top: 60px;
-    margin-bottom: 60px; */
-    line-height: 560px;
+    /* text-align: center; */
+    /* margin-top: 60px; */
+    margin-bottom: 60px;
+    height: 900px;
+    margin: 0 auto;
   }
 
 </style>

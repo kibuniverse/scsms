@@ -12,7 +12,7 @@
         <div class="top-right">
           <img src="../assets/user.png" alt="">
           <el-button type="text" @click="centerDialogVisible = true">
-            登陆
+            登录
           </el-button>
           <el-dialog
             title="二手车直卖网"
@@ -22,43 +22,43 @@
             <div>
               <el-tabs v-model="activeName">
                 <el-tab-pane label="注册" name="first">
-                  <el-form ref="registerForm" :model="registerForm" label-width="80px">
-                  <el-form-item label="用户名" style="width: 400px">
-                    <el-input v-model="registerForm.username"></el-input>
-                  </el-form-item>
-                  <el-form-item label="密码" style="width: 400px">
-                    <el-input show-password v-model="registerForm.password"></el-input>
-                  </el-form-item>
-                  <el-form-item label="电话号码" style="width: 400px">
-                    <el-input v-model="registerForm.phonenum"></el-input>
-                  </el-form-item>
-                  <el-form-item label="邮箱" style="width: 400px">
-                    <el-input v-model="registerForm.email"></el-input>
-                  </el-form-item>
-                  <el-form-item label="性别">
-                    <el-radio-group v-model="registerForm.gender">
-                      <el-radio label="1">男</el-radio>
-                      <el-radio label="0">女</el-radio>
-                    </el-radio-group>
-                  </el-form-item>
+                  <el-form  :model="registerForm" label-width="80px">
+                    <el-form-item label="用户名" style="width: 400px">
+                      <el-input v-model="registerForm.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" style="width: 400px">
+                      <el-input show-password v-model="registerForm.password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="电话号码" style="width: 400px">
+                      <el-input v-model="registerForm.phonenum"></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮箱" style="width: 400px">
+                      <el-input v-model="registerForm.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="性别">
+                      <el-radio-group v-model="registerForm.gender">
+                        <el-radio label="1">男</el-radio>
+                        <el-radio label="0">女</el-radio>
+                      </el-radio-group>
+                    </el-form-item>
                   </el-form>
                 </el-tab-pane>
                 <el-tab-pane label="登录" name="second" >
-                  <el-form ref="loginForm" :model="loginForm" label-width="80px">
-                  <el-form-item label="用户名" style="width: 400px">
-                    <el-input v-model="loginForm.username"></el-input>
-                  </el-form-item>
-                  <el-form-item label="密码" style="width: 400px">
-                    <el-input show-password v-model="loginForm.password"></el-input>
-                  </el-form-item>
+                  <el-form  :model="loginForm" label-width="80px">
+                    <el-form-item label="用户名" style="width: 400px">
+                      <el-input v-model="loginForm.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" style="width: 400px">
+                      <el-input show-password v-model="loginForm.password"></el-input>
+                    </el-form-item>
                   </el-form>
                 </el-tab-pane>
               </el-tabs>
             </div>
             <template #footer>
               <span class="dialog-footer">
-                <el-button type="primary" v-if="activeName === 'second'" @click="() => login(loginForm)">登 录</el-button>
-                <el-button type="primary" v-if="activeName === 'first'" @click="() => registerFn(registerForm)">注 册</el-button>
+                <el-button type="primary" v-if="activeName === 'second'" @click="login">登 录</el-button>
+                <el-button type="primary" v-if="activeName === 'first'" @click="registerFn">注 册</el-button>
               </span>
             </template>
           </el-dialog>
@@ -80,32 +80,27 @@ export default defineComponent({
   name: 'Main',
   components: {},
 
-  data() {
-    return {
-      registerForm: {
-        username: '',
-        password: '',
-        phonenum: '',
-        email: '',
-        gender: '男',
-      },
-      loginForm: {
-        username: 'root',
-        password: '123',
-      }
-    }
-  },
   setup() {
     const centerDialogVisible = ref(false)
     const activeName = ref('second');
+    const registerForm = reactive({
+      username: '',
+      password: '',
+      phonenum: '',
+      email: '',
+      gender: '1',
+    })
+    const loginForm = reactive({
+      username: 'root',
+      password: '123',
+    })
     let userInfo  = ref('')
-    function login (signInfo) {
-      console.log(signInfo)
-      sign(signInfo).then(res => {
+    function login () {
+      sign(loginForm).then(res => {
         if (res.data.status === 0) {
           ElMessage({
             showClose: true,
-            message: '登陆成功',
+            message: '登录成功',
             type: 'success'
           });
           centerDialogVisible.value = false
@@ -114,10 +109,11 @@ export default defineComponent({
       })
     }
 
-    function registerFn(form) {
-      form.gender = Number(form.gender)
-      register(form).then(res => {
-        if (res.status === 0) {
+    function registerFn() {
+      registerForm.gender = Number(registerForm.gender)
+      register(registerForm).then(res => {
+        console.log(res)
+        if (res.data.status === 0) {
           ElMessage({
             showClose: true,
             message: '注册成功',
@@ -148,6 +144,8 @@ export default defineComponent({
     return {
       centerDialogVisible,
       activeName,
+      loginForm,
+      registerForm,
       userInfo,
       login,
       registerFn,

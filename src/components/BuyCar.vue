@@ -21,13 +21,10 @@
       </div>
     </div>
     <div class="car-list">
-      <div class="one-car" v-for="(item, index) in carInfo" :key="index">
+      <div class="one-car" v-for="(item, index) in AllCarInfo" :key="index">
         <img src="../static/1.jpg" class="image" alt="" >
         <div class="info-head">
-          <span>{{item.series}}</span>
-          <span>{{item.model}}</span>
-          <span>{{item.displacement}}</span>
-          <span>{{item.style}}</span>
+          <span class="ellipsis">{{item.model}}</span>
         </div>
         <div class="info-middle">
           <span>{{item.year}}</span>
@@ -62,7 +59,7 @@
     setup() {
       onMounted(() => {
         getInfoFn()
-        getCarInfoFn(2)
+        getCarInfoFn(1)
       })
 
       const searchValue = ref('')
@@ -82,23 +79,28 @@
       }
       
       const oneCarInfo = {
-        series: '宝马5系',
-        model: '2014款',
-        displacement: '525Li',
-        style: '运动型',
-        year: '2016年',
-        Kilometer: '11万公里',
-        price: '36万',
+        model: '',
+        year: '',
+        Kilometer: '',
+        price: '',
       }
 
-      let AllCarInfo = ref([])
+      const AllCarInfo = ref([])
 
       function getCarInfoFn (page) {
         let nPage = {
           page,
         }
         getCarInfo(nPage).then(res => {
-          console.log(res)
+          AllCarInfo.value = []
+          const arr = res.list
+          for (let i = 0; i < arr.length; i++) {
+            oneCarInfo.model = arr[i].car.model
+            oneCarInfo.year = arr[i].buyTime.split("-")[0] + '年'
+            oneCarInfo.Kilometer = arr[i].km + '万公里'
+            oneCarInfo.price = arr[i].price + '元'
+            AllCarInfo.value.push(oneCarInfo)
+          }
           pageCount.pagenumber = res.pages
         })
       }
@@ -115,7 +117,7 @@
       return {
         cSeries,
         cBrands,
-        carInfo,
+        AllCarInfo,
         pageCount,
         pageChage,
         searchValue,
@@ -214,6 +216,12 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+  }
+  .info-head .ellipsis {
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .info-head span {
     margin-right: 5px;

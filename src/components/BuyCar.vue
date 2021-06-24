@@ -144,7 +144,9 @@
 
 <style>
   .main {
-    width: 100%;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
   }
   .search {
     width: 100%;
@@ -159,7 +161,7 @@
     margin-right: 10px;
   }
   .car-category {
-    width: 95%;
+    width: 100%;
     margin: 0 auto;
     margin-top: 10px;
   }
@@ -185,6 +187,7 @@
     height: 49px;
     line-height: 49px;
     font-size: 13px;
+    text-align: center;
     color: #303133;
   }
   .public:hover {
@@ -197,7 +200,6 @@
   .car-list {
     width: 100%;
     height: 100%;
-    margin-left: 1.8%;
     margin-top: 10px;
     display: flex;
     justify-content: flex-start;

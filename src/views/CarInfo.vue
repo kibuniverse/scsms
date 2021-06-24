@@ -41,10 +41,9 @@
       </div>
       <h5>全款价</h5>
       <h2 style="font-size: 30px; margin-top: 20px">{{ carInfo.money }}</h2>
-      <div class="msg1"></div>
       <div class="msg2"></div>
       <div class="btns">
-        <button class="btn btn1" @click="appiontmentEvent">我要预约</button>
+        <button class="btn btn1" @click="appiontmentEvent">我要购买</button>
         <button class="btn btn2" @click="bargainEvent">我要砍价</button>
         <button class="btn btn3" @click="consultEvent">免费咨询</button>
       </div>
@@ -53,7 +52,8 @@
 </template>
 
 <script>
-import { getSingleCarInfo } from "../api/buy-car/index.ts";
+import { getSingleCarInfo,generatorCarOrder } from "../api/buy-car/index.ts";
+import { ElMessage } from "element-plus";
 export default {
   name: "carInfo",
   data() {
@@ -107,7 +107,15 @@ export default {
       this.showIndex = index;
     },
     appiontmentEvent() {
-      console.log("我要预约");
+      let userId = localStorage.getItem("userId"),
+        cid = this.$route.params.id;
+      generatorCarOrder(cid, userId).then((res) => {
+        ElMessage({
+          showClose: true,
+          message: "订单生成成功!",
+          type: "success",
+        });
+      });
     },
     bargainEvent() {
       console.log("我要砍价");

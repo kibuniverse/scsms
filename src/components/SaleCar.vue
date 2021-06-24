@@ -30,11 +30,18 @@
                     v-model="value"
                     :options="options"
                     :props="props"
+                    @change="handleChange"
                   >
                   </el-cascader>
                 </el-form-item>
-                <el-form-item label="购车时间" style="width: 400px">
-                  <el-input v-model="salecarForm.buyTime"></el-input>
+                <el-form-item :model="salecarForm.buyTime" class="block" style="margin-left: -56px">
+                  <span class="demonstration">购车日期</span>
+                  <el-date-picker
+                    v-model="value1"
+                    type="date"
+                    :disabled-date="disabledDate"
+                    placeholder="选择日期">
+                  </el-date-picker>
                 </el-form-item>
                 <el-form-item label="行驶里程" style="width: 400px">
                   <el-input v-model="salecarForm.km"></el-input>
@@ -52,7 +59,7 @@
                 <el-button @click="centerDialogVisible = false"
                   >取 消</el-button
                 >
-                <el-button type="primary" @click="centerDialogVisible = false"
+                <el-button type="primary" @click="salecarsubmit"
                   >确 定</el-button
                 >
               </span>
@@ -68,20 +75,18 @@
         </div>
       </div>
     </div>
-    <!-- <div class="sell-cars">
-      <el-button type="text" @click="open">点击打开 Message Box</el-button>
-      <el-cascader 
-        v-if="centerDialogVisible"
-        :options="options" 
-        :show-all-levels="true"
-        clearable>
-        
-      </el-cascader>
+    <!-- <div class="salecar-card">
+      <el-carousel :interval="4000" type="card" height="200px">
+        <el-carousel-item v-for="item in 6" :key="item">
+          <h3 class="medium">{{ item }}</h3>
+        </el-carousel-item>
+      </el-carousel>
     </div> -->
   </div>
 </template>
 
 <script lang="ts">
+import dayjs from "dayjs";
 import {
   defineComponent,
   ref,
@@ -113,24 +118,37 @@ export default defineComponent({
         }));
       });
     });
+    
+    // console.log(window.localStorage.getItem('userId'));
+    
+    // salecarForm.userId = window.localStorage.getItem('userId');
+
+    
+    
+
     const salecarForm = reactive({
+      userId: window.localStorage.getItem('userId'),
       brand: "",
       series: "",
       model: "",
-      buyTime: "",
-      km: 1800000,
+      buyTime: '',
+      km: 0,
       color: "",
-      price: 10000,
+      price: 0,
     });
+    // console.log(typeof(salecarForm.userId));
     const carState = reactive({
       value: [],
       props: {
-        expandTrigger: "hover",
+        expandTrigger: "click",
         lazy: true,
         lazyLoad(node: any, resolve: any) {
           const { level } = node;
-          console.log(node.label);
+          // console.log(node.label);
           if (level === 1) {
+            // console.log(node.label);
+            // salecarForm.brand = node.label;
+            // console.log(salecarForm.brand);
             getCarSeries(node.label).then((res) => {
               const data = res.map((seriesItem) => ({
                 value: seriesItem,
@@ -142,7 +160,10 @@ export default defineComponent({
           }
           if (level === 2) {
             getCarModels(node.label).then((res) => {
-              console.log(res);
+              // console.log(res);
+              // console.log(node.label);
+              // salecarForm.series = node.label;
+              // console.log(salecarForm.series);
               const data = res.map((modelItem) => ({
                 value: modelItem,
                 label: modelItem,
@@ -151,15 +172,79 @@ export default defineComponent({
               resolve(data);
             });
           }
+          // console.log(node.label);
         },
       },
       options: [],
     });
 
+    function salecarsubmit() {
+      // console.log(typeof(statetime.shortcuts[0].value));
+      // salecarForm.buyTime = statetime.shortcuts[0].value;
+      console.log(statetime.value1);
+      let d = new Date(statetime.value1); 
+      let p = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+      // console.log(typeof(p));
+      salecarForm.buyTime = p;
+      salecar(salecarForm).then((res) => {
+      // salecarForm.buyTime = statetime.shortcuts[0].value;
+        if(res) {
+          centerDialogVisible.value = false;
+        }
+      }).catch(err => console.log(err))
+    }
+
+    const handleChange = (value) => {
+      // console.log(value);
+      salecarForm.brand = value[0];
+      salecarForm.series = value[1];
+      salecarForm.model = value[2];
+    };
+
+
+    // var now = dayjs()
+    // console.log(now);
+    
+    // var d = new Date(2018, 8, 18);
+    // var day = dayjs(d);
+    // console.log(day);
+    
+
+    const statetime = reactive({
+      disabledDate(time) {
+        return time.getTime() > Date.now();
+      },
+      shortcuts: [
+        {
+          text: 'A week ago',
+          value: (() => {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+            return date;
+          })(),
+        },
+      ],
+      value1: '',
+    });
+
+    // let d = new Date(statetime.value1); 
+    // let p = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    // console.log(p);
+    
+    
+    // const d = new Date(statetime.shortcuts[0].value);
+    // const resDate = d.getFullYear() + '-' + this.p((d.getMonth() + 1)) + '-' + this.p(d.getDate());
+    // const resTime = this.p(d.getHours()) + ':' + this.p(d.getMinutes()) + ':' + this.p(d.getSeconds());
+    // console.log(resDate);
+    // console.log(resTime);
+
     return {
       centerDialogVisible,
       salecarForm,
       ...toRefs(carState),
+      handleChange,
+      salecarsubmit,
+      ...toRefs(statetime)
     };
   },
 });
@@ -226,15 +311,14 @@ export default defineComponent({
   background-position: -400px -130px;
 }
 .sell-newcar a {
-  color: #fff;
+  color: deeppink;
 }
 a {
   text-decoration: none;
 }
-.sell-cars {
-  /* padding-left: 80px; */
-  /* align-items: center; */
-}
+/* .salecar-card {
+
+} */
 /* .dialog-footer {
     height: 70px;
     z-index: 999;

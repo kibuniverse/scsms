@@ -1,20 +1,30 @@
 <template>
   <div>
     <el-scrollbar>
-      <div class="flex-content">
-        <p class="items" v-for="item in 50">{{ item }}</p>
-      </div>
     </el-scrollbar>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue'
+  import { defineComponent, onMounted } from 'vue'
+  import { getOrder } from '../api/my-car'
+  import { ElMessage } from 'element-plus'
   export default defineComponent({
     name: 'MyCar',
     components: {},
     setup() {
-      
+      onMounted(() => {
+        const userId = window.localStorage.getItem('userId');
+        if (!userId) {
+          ElMessage.warning('目前还未登陆，请先登录')
+          return
+        }
+        getOrder({ userId: Number(userId) }).then(res => {
+          if (res) {
+            console.log(res)
+          }
+        })
+      })
     }
   })
 </script>

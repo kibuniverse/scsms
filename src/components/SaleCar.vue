@@ -17,7 +17,7 @@
             >高速卖车</el-button
           >
           <el-dialog
-            title="请填写爱车信息"
+            title="请填写卖车信息"
             v-model="centerDialogVisible"
             width="500px"
             center

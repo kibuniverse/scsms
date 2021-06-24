@@ -25,14 +25,14 @@
       <div class="one-car" v-for="(item, index) in AllCarInfo" :key="index">
         <img src="../static/car.jpg" class="image" alt="" >
         <div class="info-head">
-          <span class="ellipsis">{{item.model}}</span>
+          <span class="ellipsis">{{ item.model }}</span>
         </div>
         <div class="info-middle">
-          <span>{{item.year}}</span>
-          <span>{{item.Kilometer}}</span>
+          <span>{{ item.year }}</span>
+          <span>{{ item.Kilometer }}</span>
         </div>
         <div class="info-foot">
-          {{item.price}}
+          {{ item.price }}
         </div>
       </div>
       <div class="page">
@@ -64,28 +64,26 @@
         searchCar(1)
       })
 
-      const searchValue = ref('')
-      const activeNames = ref(['1'])
-      const handleChange = (val) => {
-        console.log(val)
-      }
-      
-      const cSeries = ref([])
-      const cBrands = ref([])
+    const searchValue = ref("");
+    const activeNames = ref(["1"]);
+    const handleChange = (val) => {
+      console.log(val);
+    };
 
-      /**
-       * @description: 获取品牌和车系
-       * @param {*}
-       * @return {*}
-       */      
-      function getInfoFn () {
-        getInfo().then(res => {
-          cBrands.value = res.brands
-          cSeries.value = res.series
-        })
-      }
+    const cSeries = ref([]);
+    const cBrands = ref([]);
 
-      const AllCarInfo = ref([])
+    /**
+     * @description: 获取品牌和车系
+     * @param {*}
+     * @return {*}
+     */
+    function getInfoFn() {
+      getInfo().then((res) => {
+        cSeries.value = res.brands;
+        cBrands.value = res.series;
+      });
+    }
 
       const pageCount = reactive({
         pagenumber:  null // 页数
@@ -100,6 +98,7 @@
         searchCar(page)
       }
 
+      const AllCarInfo = ref([])
       const isCar = ref(true)
       /**
        * @description: 搜索车信息

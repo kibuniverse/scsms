@@ -1,7 +1,7 @@
 import { ISaleCar, ICar } from '../../typings';
 import { get, post } from '..';
 
-export const salecar = (salecarInfo: ISaleCar): any => post('/share/index/', salecarInfo);
+export const salecar = (salecarInfo: ISaleCar): any => post('/sale/index/', salecarInfo);
 
 export const getCarBrand = (carInfo: ICar): any => get('/buy/brands/', carInfo);
 

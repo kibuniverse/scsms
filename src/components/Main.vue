@@ -266,7 +266,7 @@ export default defineComponent({
     /* text-align: center; */
     /* margin-top: 60px; */
     margin-bottom: 60px;
-    height: 900px;
+    height: 600px;
     margin: 0 auto;
   }
 

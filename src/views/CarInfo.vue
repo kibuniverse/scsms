@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { getSingleCarInfo } from "../api/buy-car/index.ts";
 export default {
   name: "carInfo",
   data() {
@@ -91,7 +92,16 @@ export default {
       },
     };
   },
-  created() {},
+  created() {
+    let id = this.$route.params.id;
+    getSingleCarInfo(id).then((res) => {
+      console.log(res);
+      this.carInfo.money = res.price;
+      this.carInfo.name = res.car.model;
+      this.carInfo.registerTime = res.buyTime.split("T")[0];
+      this.carInfo.drivingMileage = res.km + "万公里";
+    });
+  },
   methods: {
     changeIndex(index) {
       this.showIndex = index;

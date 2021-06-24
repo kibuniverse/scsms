@@ -24,9 +24,9 @@ const routes = [
         component: MyCar,
       },
       {
-        path: 'CarInfo',
+        path: '/CarInfo/:id',
         component: CarInfo,
-      }
+      },
     ],
   },
 ];

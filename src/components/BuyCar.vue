@@ -34,8 +34,7 @@
           {{item.price}}
         </div>
       </div>
-    </div>
-    <el-pagination
+      <el-pagination
       background
       layout="prev, pager, next"
       :page-size="20"
@@ -45,6 +44,7 @@
       class="page"
     >
     </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -144,7 +144,7 @@
 
 <style>
   .main {
-    width: 90%;
+    width: 100%;
     justify-content: center;
     align-items: center;
   }
@@ -161,7 +161,7 @@
     margin-right: 10px;
   }
   .car-category {
-    width: 100%;
+    width: 95%;
     margin: 0 auto;
     margin-top: 10px;
   }
@@ -202,7 +202,7 @@
     height: 100%;
     margin-top: 10px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
   }
   .one-car {
@@ -210,7 +210,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 285px;
+    width: 23%;
     height: 287px;
     padding: 9px;
     border: 1px solid #ffffff;
@@ -273,6 +273,6 @@
     height: 30px;
     line-height: 30px;
     margin-top: 20px;
-    margin-bottom: 10px;
+    padding-bottom: 20px;
   }
 </style>

@@ -3,21 +3,21 @@
     <div class="search">
       <el-input
         class="title-search title-item"
-        placeholder="请输入搜索内容"
+        placeholder="请输入关键词，例如: 奥迪"
         prefix-icon="el-icon-search"
         v-model="searchValue"
       >
       </el-input>
       <el-button type="success" class="title-button">搜索</el-button>
     </div>
-    <div class="car-category">
+    <div class="car-category" >
       <div class="title">
         <span class="sign public">品牌</span>
-        <span class="public" v-for="(item, index) in cBrands" :key="index">{{item}}</span>
+        <span class="public" v-for="(item, index) in cBrands" :key="index" @click="searchCar(1,item)">{{item}}</span>
       </div>
       <div class="car-series title">
         <span class="sign public">车系</span>
-        <span class="public" v-for="(item, index) in cSeries" :key="index">{{item}}</span>
+        <span class="public" v-for="(item, index) in cSeries" :key="index" @click="searchCar(1, '', item)">{{item}}</span>
       </div>
     </div>
     <div class="car-list">
@@ -34,16 +34,17 @@
           {{item.price}}
         </div>
       </div>
-      <el-pagination
-      background
-      layout="prev, pager, next"
-      :page-size="20"
-      :pager-count="5"
-      :page-count="pageCount.pagenumber"
-      @current-change="pageChage"
-      class="page"
-    >
-    </el-pagination>
+      <div class="page">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :page-size="20"
+          :pager-count="5"
+          :page-count="pageCount.pagenumber"
+          @current-change="pageChage"
+        >
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +60,7 @@
     setup() {
       onMounted(() => {
         getInfoFn()
-        getCarInfoFn(1)
+        searchCar(1)
       })
 
       const searchValue = ref('')
@@ -78,42 +79,12 @@
        */      
       function getInfoFn () {
         getInfo().then(res => {
-          cSeries.value = res.brands
-          cBrands.value = res.series
+          cBrands.value = res.brands
+          cSeries.value = res.series
         })
-      }
-      
-      const oneCarInfo = {
-        model: '',
-        year: '',
-        Kilometer: '',
-        price: '',
       }
 
       const AllCarInfo = ref([])
-
-      /**
-       * @description: 获取当前页数信息
-       * @param {*} page
-       * @return {*}
-       */      
-      function getCarInfoFn (page) {
-        let nPage = {
-          page,
-        }
-        getCarInfo(nPage).then(res => {
-          AllCarInfo.value = []
-          const arr = res.list
-          for (let i = 0; i < arr.length; i++) {
-            oneCarInfo.model = arr[i].car.model
-            oneCarInfo.year = arr[i].buyTime.split("-")[0] + '年'
-            oneCarInfo.Kilometer = arr[i].km + '万公里'
-            oneCarInfo.price = arr[i].price + '元'
-            AllCarInfo.value.push(oneCarInfo)
-          }
-          pageCount.pagenumber = res.pages
-        })
-      }
 
       const pageCount = reactive({
         pagenumber:  null // 页数
@@ -124,8 +95,42 @@
        * @param {*} page
        * @return {*}
        */      
-      function pageChage(page) {
-        getCarInfoFn(page)
+      function pageChage  (page) {
+        searchCar(page)
+      }
+
+      /**
+       * @description: 搜索车信息
+       * @param {*} page
+       * @param {*} brand
+       * @param {*} series
+       * @return {*}
+       */      
+      function searchCar (page=1, brand='', series='') {
+        let carInfo = {
+          page,
+          brand,
+          series,
+        }
+        getCarInfo(carInfo).then(res => {
+          AllCarInfo.value = []
+          const arr = res.list
+          console.log(arr)
+          for (let i = 0; i < arr.length; i++) {
+            const oneCarInfo = {
+              model: '',
+              year: '',
+              Kilometer: '',
+              price: '',
+            }
+            oneCarInfo.model = arr[i].car.model
+            oneCarInfo.year = arr[i].buyTime.split("-")[0] + '年'
+            oneCarInfo.Kilometer = arr[i].km + '万公里'
+            oneCarInfo.price = arr[i].price + '元'
+            AllCarInfo.value.push(oneCarInfo)
+          }
+          pageCount.pagenumber = res.pages
+        })
       }
 
       return {
@@ -137,6 +142,7 @@
         searchValue,
         activeNames,
         handleChange,
+        searchCar,
       }
     }
   })

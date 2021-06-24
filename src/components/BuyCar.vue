@@ -22,17 +22,17 @@
     </div>
     <div class="not-data" v-if="isCar === false">Not Data!</div>
     <div class="car-list" v-if="isCar === true">
-      <div class="one-car" v-for="(item, index) in AllCarInfo" :key="index">
+      <div class="one-car" v-for="(item, index) in AllCarInfo" :key="index" @click="checkEvent(item)">
         <img src="../static/car.jpg" class="image" alt="" >
         <div class="info-head">
-          <span class="ellipsis">{{item.model}}</span>
+          <span class="ellipsis">{{ item.model }}</span>
         </div>
         <div class="info-middle">
-          <span>{{item.year}}</span>
-          <span>{{item.Kilometer}}</span>
+          <span>{{ item.year }}</span>
+          <span>{{ item.Kilometer }}</span>
         </div>
         <div class="info-foot">
-          {{item.price}}
+          {{ item.price }}
         </div>
       </div>
       <div class="page">
@@ -54,6 +54,7 @@
   import { defineComponent, ref, reactive, onMounted } from 'vue'
   import { carData, carInfo } from '../data/index.ts'
   import { getInfo, getCarInfo } from '../api/buy-car/index.ts'
+  import router from "../router/index.ts";
 
   export default defineComponent({
     name: 'BuyCar',
@@ -64,28 +65,26 @@
         searchCar(1)
       })
 
-      const searchValue = ref('')
-      const activeNames = ref(['1'])
-      const handleChange = (val) => {
-        console.log(val)
-      }
-      
-      const cSeries = ref([])
-      const cBrands = ref([])
+    const searchValue = ref("");
+    const activeNames = ref(["1"]);
+    const handleChange = (val) => {
+      console.log(val);
+    };
 
-      /**
-       * @description: 获取品牌和车系
-       * @param {*}
-       * @return {*}
-       */      
-      function getInfoFn () {
-        getInfo().then(res => {
-          cBrands.value = res.brands
-          cSeries.value = res.series
-        })
-      }
+    const cSeries = ref([]);
+    const cBrands = ref([]);
 
-      const AllCarInfo = ref([])
+    /**
+     * @description: 获取品牌和车系
+     * @param {*}
+     * @return {*}
+     */
+    function getInfoFn() {
+      getInfo().then((res) => {
+        cSeries.value = res.brands;
+        cBrands.value = res.series;
+      });
+    }
 
       const pageCount = reactive({
         pagenumber:  null // 页数
@@ -100,6 +99,7 @@
         searchCar(page)
       }
 
+      const AllCarInfo = ref([])
       const isCar = ref(true)
       /**
        * @description: 搜索车信息
@@ -127,22 +127,28 @@
                 year: '',
                 Kilometer: '',
                 price: '',
+                id: 0,
               }
               oneCarInfo.model = arr[i].car.model
               oneCarInfo.year = arr[i].buyTime.split("-")[0] + '年'
               oneCarInfo.Kilometer = arr[i].km + '万公里'
               oneCarInfo.price = arr[i].price + '元'
+              oneCarInfo.id = arr[i].id
               AllCarInfo.value.push(oneCarInfo)
             }
             pageCount.pagenumber = res.pages
           }
         })
       }
-
+      function checkEvent(item) {
+        router.push("/CarInfo/" + item.id);
+        // location.hash = "/CarInfo/" + item.id;
+      }
       return {
         cSeries,
         cBrands,
         isCar,
+        checkEvent,
         AllCarInfo,
         pageCount,
         pageChage,

@@ -4,7 +4,7 @@ const Main = () => import('../components/Main.vue');
 const BuyCar = () => import('../components/BuyCar.vue');
 const SaleCar = () => import('../components/SaleCar.vue');
 const MyCar = () => import('../components/MyCar.vue');
-
+const CarInfo = () => import('../views/CarInfo.vue');
 const routes = [
   {
     path: '/',
@@ -22,6 +22,10 @@ const routes = [
       {
         path: 'selfcar',
         component: MyCar,
+      },
+      {
+        path: '/CarInfo/:id',
+        component: CarInfo,
       },
     ],
   },

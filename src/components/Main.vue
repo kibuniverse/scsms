@@ -80,90 +80,93 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, onMounted } from 'vue'
-import { register, sign } from '../api/auth/auth'
-import { ElMessage } from 'element-plus'
-import router from '../router'
+import { defineComponent, reactive, toRefs, ref, onMounted } from "vue";
+import { register, sign } from "../api/auth/auth";
+import { ElMessage } from "element-plus";
+import router from "../router";
 
 export default defineComponent({
-  name: 'Main',
+  name: "Main",
   components: {},
   setup() {
-    const centerDialogVisible = ref(false)
-    const activeName = ref('second');
+    const centerDialogVisible = ref(false);
+    const activeName = ref("second");
     const registerForm = reactive({
-      username: '',
-      password: '',
-      phoneNum: '',
-      email: '',
-      gender: '1',
-    })
+      username: "",
+      password: "",
+      phoneNum: "",
+      email: "",
+      gender: "1",
+    });
     const loginForm = reactive({
       username: '',
       password: '',
     })
     const userInfo  = ref('')
     onMounted(() => {
-      const username = window.localStorage.getItem('username')
+      const username = window.localStorage.getItem("username");
       if (username) {
-        userInfo.value = username
+        userInfo.value = username;
       }
-    })
+    });
     const handleLoginOut = () => {
-      window.localStorage.removeItem('username')
+      window.localStorage.removeItem("username");
       ElMessage({
         showClose: true,
-        message: '登出成功',
-        type: 'success'
+        message: "登出成功",
+        type: "success",
       });
-      window.location.reload()
-    }
-    function login () {
-      sign(loginForm).then(res => {
+      window.location.reload();
+    };
+    function login() {
+      sign(loginForm).then((res) => {
         if (res) {
           ElMessage({
             showClose: true,
-            message: '登录成功',
-            type: 'success'
+            message: "登录成功",
+            type: "success",
           });
           centerDialogVisible.value = false
           window.localStorage.setItem('userId', res.id)
           window.localStorage.setItem('username', res.username)
           userInfo.value = res.username
         }
-      })
+      });
     }
 
     function registerFn() {
-      registerForm.gender = Number(registerForm.gender)
-      register(registerForm).then(res => {
-        if (res) {
-          ElMessage({
-            showClose: true,
-            message: '注册成功',
-            type: 'success'
-          });
-          activeName.value = 'second'
-        }
-      }).catch(err => console.log(err))
+      registerForm.gender = Number(registerForm.gender);
+      register(registerForm)
+        .then((res) => {
+          if (res) {
+            ElMessage({
+              showClose: true,
+              message: "注册成功",
+              type: "success",
+            });
+            activeName.value = "second";
+          }
+        })
+        .catch((err) => console.log(err));
     }
 
-    function toBuyCar () {
-      router.push('buy')
-    };
-    function toMyCar () {
-      router.push('selfcar')
-    };
-    function toSaleCar () {
-      router.push('sale')
-    };
+    function toBuyCar() {
+      location.hash = "buy";
+    }
+    function toMyCar() {
+      // router.push("selfcar");
+      location.hash = "selfcar";
+    }
+    function toSaleCar() {
+      location.hash = "sale";
+    }
     const state = reactive({
-        dialogTableVisible: false,
-        dialogFormVisible: false,
-        formLabelWidth: '120px',
-        activeIndex: '1',
-        activeIndex2: '1'
-      });
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: "120px",
+      activeIndex: "1",
+      activeIndex2: "1",
+    });
 
     return {
       centerDialogVisible,
@@ -179,12 +182,12 @@ export default defineComponent({
       handleLoginOut,
       ...toRefs(state),
     };
-  }
-})
+  },
+});
 </script>
 
 <style scoped>
-  .header {
+.header {
     display: flex;
     justify-content: space-between;
     background-color: rgb(252, 252, 252);
@@ -193,7 +196,6 @@ export default defineComponent({
     height: 60px;
     top: 0;
   }
-
   .footer {
     background-color: #B3C0D1;
     color: #333;
@@ -201,7 +203,6 @@ export default defineComponent({
     height: 60px;
     bottom: 0;
   }
-
   .top-left  img {
     width: 60px;
     height: 60px;
@@ -232,7 +233,6 @@ export default defineComponent({
   .el-icon-arrow-down {
     font-size: 12px;
   }
-
   .top-center {
     display: flex;
     justify-content: space-between;

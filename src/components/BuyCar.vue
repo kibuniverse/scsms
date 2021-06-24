@@ -71,6 +71,11 @@
       const cSeries = ref([])
       const cBrands = ref([])
 
+      /**
+       * @description: 获取品牌和车系
+       * @param {*}
+       * @return {*}
+       */      
       function getInfoFn () {
         getInfo().then(res => {
           cSeries.value = res.brands
@@ -87,6 +92,11 @@
 
       const AllCarInfo = ref([])
 
+      /**
+       * @description: 获取当前页数信息
+       * @param {*} page
+       * @return {*}
+       */      
       function getCarInfoFn (page) {
         let nPage = {
           page,
@@ -109,8 +119,12 @@
         pagenumber:  null // 页数
       })
 
+      /**
+       * @description: 翻页
+       * @param {*} page
+       * @return {*}
+       */      
       function pageChage(page) {
-        console.log(page)
         getCarInfoFn(page)
       }
 

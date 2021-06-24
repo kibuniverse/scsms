@@ -6,7 +6,7 @@
           <el-menu class="top-center el-menu-demo" :default-active="activeIndex" mode="horizontal" >
             <el-menu-item index='1' @click="toBuyCar">我要买车</el-menu-item>
             <el-menu-item index='2' @click="toSaleCar">我要卖车</el-menu-item>
-            <el-menu-item index='3' @click="toMyCar">我的车</el-menu-item>
+            <el-menu-item index='3' @click="toMyCar">我的订单</el-menu-item>
           </el-menu>
         </div>
         <div class="top-right">
@@ -99,8 +99,8 @@ export default defineComponent({
       gender: '1',
     })
     const loginForm = reactive({
-      username: 'root',
-      password: '123',
+      username: '',
+      password: '',
     })
     const userInfo  = ref('')
     onMounted(() => {
@@ -127,6 +127,7 @@ export default defineComponent({
             type: 'success'
           });
           centerDialogVisible.value = false
+          window.localStorage.setItem('userId', res.id)
           window.localStorage.setItem('username', res.username)
           userInfo.value = res.username
         }

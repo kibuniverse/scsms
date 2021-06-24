@@ -12,6 +12,7 @@ interface ISign {
 }
 
 interface ISaleCar {
+  userId: string;
   brand: string;
   series: string;
   model: string;

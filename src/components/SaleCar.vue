@@ -30,11 +30,18 @@
                     v-model="value"
                     :options="options"
                     :props="props"
+                    @change="handleChange"
                   >
                   </el-cascader>
                 </el-form-item>
-                <el-form-item label="购车时间" style="width: 400px">
-                  <el-input v-model="salecarForm.buyTime"></el-input>
+                <el-form-item class="block" style="margin-left: -56px">
+                  <span class="demonstration">购车日期</span>
+                  <el-date-picker
+                    v-model="value1"
+                    type="date"
+                    :disabled-date="disabledDate"
+                    placeholder="选择日期">
+                  </el-date-picker>
                 </el-form-item>
                 <el-form-item label="行驶里程" style="width: 400px">
                   <el-input v-model="salecarForm.km"></el-input>
@@ -52,7 +59,7 @@
                 <el-button @click="centerDialogVisible = false"
                   >取 消</el-button
                 >
-                <el-button type="primary" @click="centerDialogVisible = false"
+                <el-button type="primary" @click="salecarsubmit"
                   >确 定</el-button
                 >
               </span>
@@ -82,6 +89,7 @@
 </template>
 
 <script lang="ts">
+import dayjs from "dayjs";
 import {
   defineComponent,
   ref,
@@ -113,24 +121,31 @@ export default defineComponent({
         }));
       });
     });
+
+    salecarForm.userId = window.localStorage
+
     const salecarForm = reactive({
+      userId: '',
       brand: "",
       series: "",
       model: "",
       buyTime: "",
-      km: 1800000,
+      km: 0,
       color: "",
-      price: 10000,
+      price: 0,
     });
     const carState = reactive({
       value: [],
       props: {
-        expandTrigger: "hover",
+        expandTrigger: "click",
         lazy: true,
         lazyLoad(node: any, resolve: any) {
           const { level } = node;
-          console.log(node.label);
+          // console.log(node.label);
           if (level === 1) {
+            // console.log(node.label);
+            // salecarForm.brand = node.label;
+            // console.log(salecarForm.brand);
             getCarSeries(node.label).then((res) => {
               const data = res.map((seriesItem) => ({
                 value: seriesItem,
@@ -142,7 +157,10 @@ export default defineComponent({
           }
           if (level === 2) {
             getCarModels(node.label).then((res) => {
-              console.log(res);
+              // console.log(res);
+              // console.log(node.label);
+              // salecarForm.series = node.label;
+              // console.log(salecarForm.series);
               const data = res.map((modelItem) => ({
                 value: modelItem,
                 label: modelItem,
@@ -151,15 +169,61 @@ export default defineComponent({
               resolve(data);
             });
           }
+          // console.log(node.label);
         },
       },
       options: [],
     });
 
+    function salecarsubmit() {
+      salecar(salecarForm).then((res) => {
+        if(res) {
+          centerDialogVisible.value = false;
+        }
+      }).catch(err => console.log(err))
+    }
+
+    const handleChange = (value) => {
+      // console.log(value);
+      salecarForm.brand = value[0];
+      salecarForm.series = value[1];
+      salecarForm.model = value[2];
+    };
+
+
+    var now = dayjs()
+    console.log(now);
+    
+    // var d = new Date(2018, 8, 18);
+    // var day = dayjs(d);
+    // console.log(day);
+    
+
+    const statetime = reactive({
+      disabledDate(time) {
+        return time.getTime() > Date.now();
+      },
+      shortcuts: [
+        {
+          text: 'A week ago',
+          value: (() => {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+            return date;
+          })(),
+        },
+      ],
+      value1: '',
+    });
+
+
     return {
       centerDialogVisible,
       salecarForm,
       ...toRefs(carState),
+      handleChange,
+      salecarsubmit,
+      ...toRefs(statetime)
     };
   },
 });

@@ -22,7 +22,7 @@
     </div>
     <div class="not-data" v-if="isCar === false">Not Data!</div>
     <div class="car-list" v-if="isCar === true">
-      <div class="one-car" v-for="(item, index) in AllCarInfo" :key="index">
+      <div class="one-car" v-for="(item, index) in AllCarInfo" :key="index" @click="checkEvent(item)">
         <img src="../static/car.jpg" class="image" alt="" >
         <div class="info-head">
           <span class="ellipsis">{{ item.model }}</span>
@@ -54,6 +54,7 @@
   import { defineComponent, ref, reactive, onMounted } from 'vue'
   import { carData, carInfo } from '../data/index.ts'
   import { getInfo, getCarInfo } from '../api/buy-car/index.ts'
+  import router from "../router/index.ts";
 
   export default defineComponent({
     name: 'BuyCar',
@@ -126,22 +127,28 @@
                 year: '',
                 Kilometer: '',
                 price: '',
+                id: 0,
               }
               oneCarInfo.model = arr[i].car.model
               oneCarInfo.year = arr[i].buyTime.split("-")[0] + '年'
               oneCarInfo.Kilometer = arr[i].km + '万公里'
               oneCarInfo.price = arr[i].price + '元'
+              oneCarInfo.id = arr[i].id
               AllCarInfo.value.push(oneCarInfo)
             }
             pageCount.pagenumber = res.pages
           }
         })
       }
-
+      function checkEvent(item) {
+        router.push("/CarInfo/" + item.id);
+        // location.hash = "/CarInfo/" + item.id;
+      }
       return {
         cSeries,
         cBrands,
         isCar,
+        checkEvent,
         AllCarInfo,
         pageCount,
         pageChage,

@@ -125,14 +125,16 @@ export default {
   display: flex;
   justify-content: space-around;
   margin: 0 auto;
+  width: 100%;
+  height: 100%;
 }
 .carInfo .left {
   width: 42%;
-  height: 680px;
+  height:70%;
 }
 .carInfo .right {
   width: 42%;
-  height: 680px;
+  height: 70%;
 }
 .carInfo .left .top {
   width: 100%;

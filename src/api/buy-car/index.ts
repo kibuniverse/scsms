@@ -1,4 +1,4 @@
-import { get } from '../index.ts';
+import { get } from '..';
 
 export const getInfo = (): unknown => get('/buy/index');
 

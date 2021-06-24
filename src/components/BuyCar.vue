@@ -181,10 +181,8 @@
     border-bottom: 1px solid  rgb(240, 240, 240);
   }
   .car-list {
-    width: 100%;
-    height: 100%;
-    margin-left: 1.8%;
-    margin-top: 10px;
+    width: 80%;
+    margin: 10px auto;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -194,7 +192,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 285px;
+    width: 23%;
     height: 287px;
     padding: 9px;
     border: 1px solid #ffffff;

@@ -20,9 +20,10 @@
         <span class="public" v-for="(item, index) in cSeries" :key="index" @click="searchCar(1, '', item)">{{item}}</span>
       </div>
     </div>
-    <div class="car-list">
+    <div class="not-data" v-if="isCar === false">Not Data!</div>
+    <div class="car-list" v-if="isCar === true">
       <div class="one-car" v-for="(item, index) in AllCarInfo" :key="index">
-        <img src="../static/1.jpg" class="image" alt="" >
+        <img src="../static/car.jpg" class="image" alt="" >
         <div class="info-head">
           <span class="ellipsis">{{item.model}}</span>
         </div>
@@ -99,6 +100,7 @@
         searchCar(page)
       }
 
+      const isCar = ref(true)
       /**
        * @description: 搜索车信息
        * @param {*} page
@@ -113,29 +115,34 @@
           series,
         }
         getCarInfo(carInfo).then(res => {
-          AllCarInfo.value = []
-          const arr = res.list
-          console.log(arr)
-          for (let i = 0; i < arr.length; i++) {
-            const oneCarInfo = {
-              model: '',
-              year: '',
-              Kilometer: '',
-              price: '',
+          if (res.size === 0) {
+            isCar.value = false
+          } else if (res.size > 0) {
+            isCar.value = true
+            AllCarInfo.value = []
+            const arr = res.list
+            for (let i = 0; i < arr.length; i++) {
+              const oneCarInfo = {
+                model: '',
+                year: '',
+                Kilometer: '',
+                price: '',
+              }
+              oneCarInfo.model = arr[i].car.model
+              oneCarInfo.year = arr[i].buyTime.split("-")[0] + '年'
+              oneCarInfo.Kilometer = arr[i].km + '万公里'
+              oneCarInfo.price = arr[i].price + '元'
+              AllCarInfo.value.push(oneCarInfo)
             }
-            oneCarInfo.model = arr[i].car.model
-            oneCarInfo.year = arr[i].buyTime.split("-")[0] + '年'
-            oneCarInfo.Kilometer = arr[i].km + '万公里'
-            oneCarInfo.price = arr[i].price + '元'
-            AllCarInfo.value.push(oneCarInfo)
+            pageCount.pagenumber = res.pages
           }
-          pageCount.pagenumber = res.pages
         })
       }
 
       return {
         cSeries,
         cBrands,
+        isCar,
         AllCarInfo,
         pageCount,
         pageChage,
@@ -198,6 +205,7 @@
   }
   .public:hover {
     color: seagreen;
+    cursor: pointer;
   }
   .car-series {
     height: 49px;
@@ -280,5 +288,11 @@
     line-height: 30px;
     margin-top: 20px;
     padding-bottom: 20px;
+  }
+  .not-data {
+    width: 100%;
+    height: 300px;
+    line-height: 300px;
+    text-align: center;
   }
 </style>

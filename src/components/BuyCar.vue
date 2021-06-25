@@ -81,8 +81,8 @@
      */
     function getInfoFn() {
       getInfo().then((res) => {
-        cSeries.value = res.brands;
-        cBrands.value = res.series;
+        cBrands.value = res.brands;
+        cSeries.value = res.series;
       });
     }
 

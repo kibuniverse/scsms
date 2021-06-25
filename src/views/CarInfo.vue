@@ -44,8 +44,6 @@
       <div class="msg2"></div>
       <div class="btns">
         <button class="btn btn1" @click="appiontmentEvent">我要购买</button>
-        <button class="btn btn2" @click="bargainEvent">我要砍价</button>
-        <button class="btn btn3" @click="consultEvent">免费咨询</button>
       </div>
     </div>
   </div>

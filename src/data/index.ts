@@ -128,7 +128,20 @@ const carInfo = [
   },
 ];
 
+const order = [
+  {
+    id: '01',
+    name: '理想ONE',
+    state: '已完成',
+    city: '西安',
+    paytime: '下单后5-7周',
+    configure: ['白色金属漆', '20英寸豪华型​双色轮毂', '20英寸豪华型​双色轮毂', '棕色皮革内饰', '6座'],
+    imageUrl: '',
+    price: '50w',
+  },
+];
 export {
   carInfo,
   carData,
+  order,
 };

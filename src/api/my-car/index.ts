@@ -1,3 +1,5 @@
-import { get, post } from '..';
+import { get } from '../index.ts';
 
-export const getOrder = (param: { userId: number}) => get('/order/getOrder/', param);
+export default function getOrder(param: { userId: number; }): Promise<unknown> {
+  return get('/order/getorder/', param);
+}

@@ -3,7 +3,7 @@
     <div class="left">
       <div
         class="top"
-        :style="{ backgroundImage: 'url(' + images[showIndex].url + ')' }"
+        :style="{ backgroundImage: 'url(' + carInfo.imageUrl + ')' }"
       ></div>
       <div class="bottom">
         <img
@@ -49,8 +49,8 @@
   </div>
 </template>
 
-<script>
-import { getSingleCarInfo,generatorCarOrder } from "../api/buy-car/index.ts";
+<script lang="ts">
+import { getSingleCarInfo,generatorCarOrder } from "../api/buy-car/index";
 import { ElMessage } from "element-plus";
 export default {
   name: "carInfo",
@@ -82,6 +82,7 @@ export default {
       ],
       carInfo: {
         name: "奔驰C级 2016款 C 180 L 运动型",
+        imageUrl: "/src/assets/m4.jpg",
         registerTime: "20l6-06",
         drivingMileage: "5.08万公里",
         displacement: "1.6T",
@@ -92,22 +93,23 @@ export default {
   },
   created() {
     let id = this.$route.params.id;
-    getSingleCarInfo(id).then((res) => {
+    getSingleCarInfo(id).then((res: any) => {
       console.log(res);
-      this.carInfo.money = res.price;
+      this.carInfo.imageUrl = res.car.cxLogo,
+      this.carInfo.money = res.price + '万元';
       this.carInfo.name = res.car.model;
-      this.carInfo.registerTime = res.buyTime.split("T")[0];
+      this.carInfo.registerTime = res.createTime.split("T")[0];
       this.carInfo.drivingMileage = res.km + "万公里";
     });
   },
   methods: {
-    changeIndex(index) {
+    changeIndex(index: number) {
       this.showIndex = index;
     },
     appiontmentEvent() {
       let userId = localStorage.getItem("userId"),
         cid = this.$route.params.id;
-      generatorCarOrder(cid, userId).then((res) => {
+      generatorCarOrder(cid, userId).then((res: any) => {
         ElMessage({
           showClose: true,
           message: "订单生成成功!",
@@ -131,7 +133,7 @@ export default {
   display: flex;
   justify-content: space-around;
   margin: 0 auto;
-  width: 100%;
+  width: 100vw;
   height: 100%;
 }
 .carInfo .left {

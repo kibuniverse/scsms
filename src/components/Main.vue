@@ -119,7 +119,7 @@ export default defineComponent({
       window.location.reload();
     };
     function login() {
-      sign(loginForm).then((res) => {
+      sign(loginForm).then((res: { id: string; username: string; }) => {
         if (res) {
           ElMessage({
             showClose: true,
@@ -137,7 +137,7 @@ export default defineComponent({
     function registerFn() {
       registerForm.gender = Number(registerForm.gender);
       register(registerForm)
-        .then((res) => {
+        .then((res: any) => {
           if (res) {
             ElMessage({
               showClose: true,

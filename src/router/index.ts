@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 const Main = () => import('../components/Main.vue');
 const BuyCar = () => import('../components/BuyCar.vue');
 const SaleCar = () => import('../components/SaleCar.vue');
-const MyCar = () => import('../components/MyCar.vue');
+const MyCar = () => import('../views/MyCar.vue');
 const CarInfo = () => import('../views/CarInfo.vue');
 const routes = [
   {

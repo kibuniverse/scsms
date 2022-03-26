@@ -28,9 +28,19 @@ interface ICar {
   model?: string;
 }
 
+interface CarInfo {
+  imageUrl: string,
+  model: string,
+  year: string,
+  Kilometer: string,
+  price: string,
+  id: number,
+}
+
 export {
   IRegist,
   ISign,
   ISaleCar,
   ICar,
+  CarInfo,
 };

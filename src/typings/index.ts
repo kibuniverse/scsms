@@ -29,18 +29,21 @@ interface ICar {
 }
 
 interface CarInfo {
-  imageUrl: string,
-  model: string,
-  year: string,
-  Kilometer: string,
-  price: string,
-  id: number,
+  imageUrl: string;
+  model: string;
+  year: string;
+  Kilometer: string;
+  price: string;
+  id: number;
+}
+interface OrderList {
+  id: number;
+  model: string;
+  tradinghour: string;
+  CarInfo: string;
+  price: number;
+  brand: string;
+  picture: string;
 }
 
-export {
-  IRegist,
-  ISign,
-  ISaleCar,
-  ICar,
-  CarInfo,
-};
+export { IRegist, ISign, ISaleCar, ICar, CarInfo, OrderList };

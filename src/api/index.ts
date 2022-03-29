@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { ElMessage } from 'element-plus';
+import axios from "axios";
+import { ElMessage } from "element-plus";
 
-const baseURL = 'http://192.168.1.106:8080';
+const baseURL = "http://192.168.1.107:8080";
 
 export const api = axios.create({
   baseURL,
@@ -9,14 +9,19 @@ export const api = axios.create({
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const post = async (url: string, data: Record<string | number, any>): Promise<any> => {
+export const post = async (
+  url: string,
+  data: Record<string | number, any>
+): Promise<any> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const resData: any = await axios.post(`${baseURL}${url}`, data, { headers: { withCredentials: true } });
+  const resData: any = await axios.post(`${baseURL}${url}`, data, {
+    headers: { withCredentials: true },
+  });
   if (resData.data.status) {
     ElMessage({
       showClose: true,
       message: resData.data.msg,
-      type: 'error',
+      type: "error",
     });
     return false;
   }
@@ -24,7 +29,10 @@ export const post = async (url: string, data: Record<string | number, any>): Pro
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const get = async (url = '', data: Record<string | number, any> = {}): Promise<any> => {
+export const get = async (
+  url = "",
+  data: Record<string | number, any> = {}
+): Promise<any> => {
   let realUrl = baseURL + url;
   Object.keys(data).forEach((item, index) => {
     if (index === 0) {
@@ -34,12 +42,14 @@ export const get = async (url = '', data: Record<string | number, any> = {}): Pr
     }
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const resData: any = await axios.get(realUrl, { headers: { withCredentials: true } });
+  const resData: any = await axios.get(realUrl, {
+    headers: { withCredentials: true },
+  });
   if (resData.data.status) {
     ElMessage({
       showClose: true,
       message: resData.data.msg,
-      type: 'error',
+      type: "error",
     });
     return false;
   }

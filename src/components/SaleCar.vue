@@ -74,6 +74,7 @@
 
 <script lang="ts">
 import dayjs from "dayjs";
+import { ElMessage } from "element-plus";
 import {
   defineComponent,
   ref,
@@ -176,6 +177,11 @@ export default defineComponent({
       // salecarForm.buyTime = statetime.shortcuts[0].value;
         if(res) {
           centerDialogVisible.value = false;
+          ElMessage({
+            showClose: true,
+            message: "订单提交成功！等待管理员审核",
+            type: 'success',
+          })
         }
       }).catch((err: any) => console.log(err))
     }

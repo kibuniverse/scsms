@@ -107,9 +107,12 @@ export default {
       this.showIndex = index;
     },
     appiontmentEvent() {
-      let userId = localStorage.getItem("userId"),
-        cid = this.$route.params.id;
-      generatorCarOrder(cid, userId).then((res: any) => {
+      const data = {
+        buyerId: localStorage.getItem("userId"),
+        saleCarId: this.$route.params.id,
+      }
+    
+      generatorCarOrder(data).then((res: any) => {
         ElMessage({
           showClose: true,
           message: "订单生成成功!",

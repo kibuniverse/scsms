@@ -10,6 +10,7 @@
       <el-button
         type="success"
         class="title-button"
+        @click="searchCar(1, searchValue)"
       >
         搜索
       </el-button>
@@ -44,12 +45,22 @@
     >
       Not Data!
     </div>
+    <div class="page">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :page-size="20"
+          :pager-count="5"
+          :page-count="pageCount.pagenumber"
+          @current-change="pageChage"
+        />
+      </div>
     <div
       v-if="isCar === true"
       class="car-list"
     >
       <div
-        v-for="(item, index) in AllCarInfo"
+        v-for="(item, index) in allCarInfo"
         :key="index"
         class="one-car"
         @click="checkEvent(item)"
@@ -68,16 +79,6 @@
         <div class="info-foot">
           {{ item.price }}
         </div>
-      </div>
-      <div class="page">
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :page-size="20"
-          :pager-count="5"
-          :page-count="pageCount.pagenumber"
-          @current-change="pageChage"
-        />
       </div>
     </div>
   </div>
@@ -138,7 +139,7 @@ import { useRouter } from 'vue-router';
           searchCar(page);
         }
 
-        const AllCarInfo: CarInfo[] = [];
+        const allCarInfo = ref<any>([]);
         const isCar = ref(true);
         /**
          * @description: 搜索车信息
@@ -159,6 +160,7 @@ import { useRouter } from 'vue-router';
             } else if (res.size > 0) {
               isCar.value = true;
               const arr = res.list;
+              const allCar = [];
               for (let i = 0; i < arr.length; i++) {
                 const oneCarInfo: CarInfo = {
                   imageUrl: '',
@@ -174,8 +176,9 @@ import { useRouter } from 'vue-router';
                 oneCarInfo.Kilometer = `${arr[i].km}万公里`;
                 oneCarInfo.price = `${arr[i].price}万元`;
                 oneCarInfo.id = arr[i].id;
-                AllCarInfo.push(oneCarInfo);
+                allCar.push(oneCarInfo);
               }
+              allCarInfo.value = allCar
               pageCount.pagenumber = res.pages;
             }
           });
@@ -189,7 +192,7 @@ import { useRouter } from 'vue-router';
           cBrands,
           isCar,
           checkEvent,
-          AllCarInfo,
+          allCarInfo,
           pageCount,
           pageChage,
           searchValue,
@@ -223,6 +226,7 @@ import { useRouter } from 'vue-router';
     width: 95%;
     margin: 0 auto;
     margin-top: 10px;
+    position: relative;
   }
   .title {
     display: flex;
@@ -257,9 +261,14 @@ import { useRouter } from 'vue-router';
     height: 49px;
     border-bottom: 1px solid  rgb(240, 240, 240);
   }
+  .page {
+    height: 30px;
+    line-height: 30px;
+    margin-top: 20px;
+    margin-left: 43%;
+  }
   .car-list {
     width: 100%;
-    height: 100%;
     margin-top: 10px;
     display: flex;
     justify-content: flex-start;
@@ -329,14 +338,7 @@ import { useRouter } from 'vue-router';
     font-size: 20px;
     color: #F95523;
   }
-  .page {
-    position: absolute;
-    bottom: 20px;
-    left: 45%;
-    height: 30px;
-    line-height: 30px;
-    margin-top: 20px;
-  }
+
   .not-data {
     width: 100%;
     height: 300px;

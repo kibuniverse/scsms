@@ -128,7 +128,7 @@ const carInfo = [
   },
 ];
 
-const order = [
+const order: Array = [
   {
     id: '01',
     name: '理想ONE',

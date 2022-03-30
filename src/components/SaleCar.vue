@@ -115,7 +115,7 @@ export default defineComponent({
     
 
     const salecarForm = reactive({
-      userId: window.localStorage.getItem('userId'),
+      userId: window.sessionStorage.getItem('userId'),
       brand: "",
       series: "",
       model: "",

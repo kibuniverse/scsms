@@ -16,16 +16,16 @@ const routes = [
         component: BuyCar,
       },
       {
+        path: 'CarInfo/:id',
+        component: CarInfo,
+      },
+      {
         path: 'sale',
         component: SaleCar,
       },
       {
         path: 'selfcar',
         component: MyCar,
-      },
-      {
-        path: '/CarInfo/:id',
-        component: CarInfo,
       },
     ],
   },

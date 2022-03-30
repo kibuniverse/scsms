@@ -9,9 +9,14 @@ export const api = axios.create({
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const post = async (url: string, data: Record<string | number, any>): Promise<any> => {
+export const post = async (
+  url: string,
+  data: Record<string | number, any>,
+): Promise<any> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const resData: any = await axios.post(`${baseURL}${url}`, data, { headers: { withCredentials: true } });
+  const resData: any = await axios.post(`${baseURL}${url}`, data, {
+    headers: { withCredentials: true },
+  });
   if (resData.data.status) {
     ElMessage({
       showClose: true,
@@ -24,7 +29,10 @@ export const post = async (url: string, data: Record<string | number, any>): Pro
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const get = async (url = '', data: Record<string | number, any> = {}): Promise<any> => {
+export const get = async (
+  url = '',
+  data: Record<string | number, any> = {},
+): Promise<any> => {
   let realUrl = baseURL + url;
   Object.keys(data).forEach((item, index) => {
     if (index === 0) {
@@ -34,7 +42,9 @@ export const get = async (url = '', data: Record<string | number, any> = {}): Pr
     }
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const resData: any = await axios.get(realUrl, { headers: { withCredentials: true } });
+  const resData: any = await axios.get(realUrl, {
+    headers: { withCredentials: true },
+  });
   if (resData.data.status) {
     ElMessage({
       showClose: true,

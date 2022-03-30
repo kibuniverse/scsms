@@ -107,18 +107,30 @@ export default {
       this.showIndex = index;
     },
     appiontmentEvent() {
-      const data = {
-        buyerId: localStorage.getItem("userId"),
-        saleCarId: this.$route.params.id,
-      }
-    
-      generatorCarOrder(data).then((res: any) => {
+      const userId = window.sessionStorage.getItem("userId")
+      if (!userId) {
         ElMessage({
           showClose: true,
-          message: "订单生成成功!",
-          type: "success",
+          message: "请先登录！",
+          type: "warning",
         });
-      });
+      } else {
+        const data = {
+          buyerId: userId,
+          saleCarId: this.$route.params.id,
+        }
+      
+        generatorCarOrder(data).then((res: any) => {
+          console.log(res)
+          if (res) {
+            ElMessage({
+              showClose: true,
+              message: "订单生成成功!",
+              type: "success",
+            });
+          }
+        });
+      }
     },
     bargainEvent() {
       console.log("我要砍价");
